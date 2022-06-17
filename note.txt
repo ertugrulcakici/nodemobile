@@ -1,0 +1,1 @@
+giriş yaparken X_Users i çekmeyecek. İnternet varsa uzaktan bilgileri kontrol edicek. İnternet yoksa, çerezlerden kontrol edicek. Her login yapmasında bilgileri çereze kaydedecek.
