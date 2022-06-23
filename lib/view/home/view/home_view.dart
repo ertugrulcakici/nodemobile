@@ -35,26 +35,10 @@ class _HomeViewState extends State<HomeView>
       body: GridView.count(
         crossAxisCount: 2,
         children: [
-          // Card(
-          //   elevation: 8,
-          //   child: Container(
-          //     padding: EdgeInsets.all(0.025.sh),
-          //     child: Column(
-          //         mainAxisAlignment: MainAxisAlignment.center,
-          //         crossAxisAlignment: CrossAxisAlignment.center,
-          //         children: [
-          //           const Icon(Icons.check_box),
-          //           SizedBox(height: 0.01.sh),
-          //           Text('Stok listesi',
-          //               style: TextStyle(fontSize: 20.sp),
-          //               textAlign: TextAlign.center),
-          //         ]),
-          //   ),
-          // ),
           InkWell(
             onTap: () {
               NavigationService.instance
-                  .navigateToPage(path: NavigationConstants.perakende);
+                  .navigateToPage(path: NavigationConstants.malzemeFisleri);
             },
             child: Card(
               elevation: 8,
@@ -66,7 +50,29 @@ class _HomeViewState extends State<HomeView>
                     children: [
                       const Icon(Icons.receipt),
                       SizedBox(height: 0.01.sh),
-                      Text('Perakende',
+                      Text('Malzeme fişleri',
+                          style: TextStyle(fontSize: 20.sp),
+                          textAlign: TextAlign.center),
+                    ]),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              NavigationService.instance
+                  .navigateToPage(path: NavigationConstants.stoklar);
+            },
+            child: Card(
+              elevation: 8,
+              child: Container(
+                padding: EdgeInsets.all(0.025.sh),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.receipt),
+                      SizedBox(height: 0.01.sh),
+                      Text('Stoklar',
                           style: TextStyle(fontSize: 20.sp),
                           textAlign: TextAlign.center),
                     ]),

@@ -183,13 +183,13 @@ class _LoginViewState extends ConsumerState<LoginView> {
                       ),
                       Row(children: [
                         Checkbox(
-                            value: LocaleManager.instance.getBool(
-                                    LocaleManagerEnums.rememberMe.name) ??
+                            value: LocaleManager.instance
+                                    .getBool(LocaleManagerEnums.rememberMe) ??
                                 false,
                             onChanged: (value) {
                               setState(() {
                                 LocaleManager.instance.setBool(
-                                    LocaleManagerEnums.rememberMe.name,
+                                    LocaleManagerEnums.rememberMe,
                                     value ?? false);
                               });
                             }),
@@ -242,11 +242,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
         ],
       ),
     );
-  }
-
-  void _settings() {
-    NavigationService.instance
-        .navigateToPage(path: NavigationConstants.connectionSettings);
   }
 
   Future<void> _login() async {

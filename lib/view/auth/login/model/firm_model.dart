@@ -10,8 +10,7 @@ class FirmModel {
   String database;
 
   bool get isDefault =>
-      id ==
-      LocaleManager.instance.getInt(LocaleManagerEnums.defaultFirmId.name);
+      id == LocaleManager.instance.getInt(LocaleManagerEnums.defaultFirmId);
 
   FirmModel({
     this.id,

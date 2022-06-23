@@ -31,12 +31,12 @@ class FisManager {
     }
   }
 
-  Future<LocaleDatatable?> girisDepolariniGetir() async {
+  Future<LocaleDatatable?> depolariGetir() async {
     try {
       return LocaleDatatable((await DatabaseService.instance.firmDb
           .rawQuery("select * from CRD_StockWareHouse")));
     } catch (e) {
-      log("girisDepolariniGetir hatası: $e");
+      log("depolariGetir hatası: $e");
       return null;
     }
   }
@@ -131,8 +131,8 @@ class FisManager {
         }
       }
 
-      String _baslikQuery = baslik.toInsertQuery();
-      String _satirlarQuery = satirlar.map((e) => e.toInsertQuery()).join("");
+      String baslikQuery = baslik.toInsertQuery();
+      String satirlarQuery = satirlar.map((e) => e.toInsertQuery()).join("");
 
       try {
         String query = """
@@ -140,16 +140,16 @@ class FisManager {
 
         BEGIN TRANSACTION
           DECLARE @DataID int;
-          $_baslikQuery
+          $baslikQuery
           SELECT @DataID = scope_identity();
-          $_satirlarQuery
+          $satirlarQuery
         COMMIT
         
         SET XACT_ABORT OFF;
     """;
         // log(query);
 
-        await RemoteDatabaseHelper.execute(query);
+        await RemoteDatabaseService.execute(query);
 
         await DatabaseService.instance.firmDb.rawDelete(
             "update TRN_StockTrans set GoldenSync = 1 where id = ${baslik.id}");
@@ -170,7 +170,7 @@ class FisManager {
       }
 
       // await DatabaseService.instance.firmDb
-      //     .insert(TableNames.TRN_StockTrans.name, baslik.toJson());
+      //     .insert(TableNames.TRN_StockTrans, baslik.toJson());
       // await DatabaseService.instance.firmDb.execute(
       //     "delete from TRN_StockTransLines where StockTransID = ${baslik.id}");
     } catch (e) {

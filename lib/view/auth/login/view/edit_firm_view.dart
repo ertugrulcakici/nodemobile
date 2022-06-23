@@ -10,9 +10,9 @@ import '../model/firm_model.dart';
 import '../viewmodel/login_viewmodel.dart';
 
 class EditFirmView extends ConsumerStatefulWidget {
-  ChangeNotifierProvider<LoginViewModel> provider;
-  FirmModel firmModel;
-  EditFirmView({
+  final ChangeNotifierProvider<LoginViewModel> provider;
+  final FirmModel firmModel;
+  const EditFirmView({
     Key? key,
     required this.provider,
     required this.firmModel,
@@ -75,7 +75,7 @@ class _EditFirmViewState extends ConsumerState<EditFirmView> {
                       .read<LoginViewModel>(widget.provider)
                       .deleteFirm(newModel)) {
                     LocaleManager.instance
-                        .remove(LocaleManagerEnums.defaultFirmId.name);
+                        .remove(LocaleManagerEnums.defaultFirmId);
                     PopupHelper.showSimpleSnackbar("Firma silindi");
                     NavigationService.instance.back();
                   } else {

@@ -8,4 +8,13 @@ extension MapExtentions<K, V> on Map {
     forEach((k, v) => temp[v] = k);
     return temp;
   }
+
+  bool containsValues(Map<K, V> other) {
+    for (var key in other.keys) {
+      if (this[key] != other[key]) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

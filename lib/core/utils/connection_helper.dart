@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:sql_conn/sql_conn.dart';
 
 import '../../product/enums/locale_manager_enums.dart';
@@ -40,7 +41,7 @@ class ConnectionHelper {
   static Future<bool> connectDatabase() async {
     if (await networkConnected()) {
       int? firmId =
-          LocaleManager.instance.getInt(LocaleManagerEnums.defaultFirmId.name);
+          LocaleManager.instance.getInt(LocaleManagerEnums.defaultFirmId);
       if (firmId == null) {
         log("Firma id si seçilmemiş");
         return false;
@@ -66,6 +67,30 @@ class ConnectionHelper {
       }
     } else {
       return false;
+    }
+  }
+
+  static Future<dynamic> tryConnect(
+      {Function? onDone, Function? onError, String errorMessage = ""}) async {
+    if (await databaseConnected()) {
+      if (onDone != null) {
+        return onDone();
+      }
+    }
+    if (!(await databaseConnected())) {
+      EasyLoading.show(status: "Sunucuya bağlı değil. Bağlanılıyor...");
+      if (await connectDatabase()) {
+        EasyLoading.showToast("Bağlandı", duration: const Duration(seconds: 2));
+        if (onDone != null) {
+          return onDone();
+        }
+      } else {
+        EasyLoading.showToast("Bağlanamadı. $errorMessage",
+            duration: const Duration(seconds: 2));
+        if (onError != null) {
+          return onError();
+        }
+      }
     }
   }
 }

@@ -7,8 +7,8 @@ import '../model/firm_model.dart';
 import '../viewmodel/login_viewmodel.dart';
 
 class AddFirmView extends ConsumerStatefulWidget {
-  ChangeNotifierProvider<LoginViewModel> provider;
-  AddFirmView({Key? key, required this.provider}) : super(key: key);
+  final ChangeNotifierProvider<LoginViewModel> provider;
+  const AddFirmView({Key? key, required this.provider}) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddFirmViewState();
@@ -19,6 +19,11 @@ class _AddFirmViewState extends ConsumerState<AddFirmView> {
 
   @override
   void initState() {
+    model.serverIp = "192.168.1.58";
+    model.database = "ARIKREAL";
+    model.username = "sa";
+    model.password = "ertuertu27";
+    model.name = "deneme";
     super.initState();
   }
 
@@ -30,21 +35,14 @@ class _AddFirmViewState extends ConsumerState<AddFirmView> {
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
+        onPressed: _fab,
         child: const Icon(Icons.save),
-        onPressed: () async {
-          if (await ref.read(widget.provider).addFirm(model)) {
-            PopupHelper.showSimpleSnackbar('Firma eklendi');
-            NavigationService.instance.back();
-          } else {
-            PopupHelper.showSimpleSnackbar('Firma eklenemedi');
-          }
-        },
       ),
       body: Form(
         child: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             TextFormField(
-                initialValue: model.database,
+                initialValue: model.name,
                 onChanged: (value) {
                   model.name = value;
                 },
@@ -78,5 +76,16 @@ class _AddFirmViewState extends ConsumerState<AddFirmView> {
         ),
       ),
     );
+  }
+
+  void _fab() async {
+    if (ref.watch(widget.provider).fabActive) {
+      if (await ref.read(widget.provider).addFirm(model)) {
+        PopupHelper.showSimpleSnackbar('Firma eklendi');
+        NavigationService.instance.back();
+      } else {
+        PopupHelper.showSimpleSnackbar('Firma eklenemedi');
+      }
+    }
   }
 }

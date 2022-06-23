@@ -12,7 +12,8 @@ import '../model/firm_model.dart';
 
 class LoginViewModel extends ChangeNotifier {
   List<FirmModel> firmList = [];
-  static const Duration _duration = Duration(milliseconds: 0);
+
+  bool fabActive = true;
 
   FirmModel? get defaultFirm {
     if (firmList.isEmpty) {
@@ -48,13 +49,12 @@ class LoginViewModel extends ChangeNotifier {
           return false;
         } else {
           LocaleManager.instance.setInt(
-              LocaleManagerEnums.loggedUserId.name, result.first["ID"] as int);
-          if (LocaleManager.instance
-                  .getBool(LocaleManagerEnums.rememberMe.name) ??
+              LocaleManagerEnums.loggedUserId, result.first["ID"] as int);
+          if (LocaleManager.instance.getBool(LocaleManagerEnums.rememberMe) ??
               false) {
             try {
               await DatabaseService.instance.userDb.execute(
-                  "update X_Firms set defaultUsername = '$username', defaultPassword = '$password' where FirmNr = ${LocaleManager.instance.getInt(LocaleManagerEnums.defaultFirmId.name)}");
+                  "update X_Firms set defaultUsername = '$username', defaultPassword = '$password' where FirmNr = ${LocaleManager.instance.getInt(LocaleManagerEnums.defaultFirmId)}");
               log("başarılı");
             } catch (e) {
               log("default kaydedilmedi. Hata: $e");
@@ -72,6 +72,8 @@ class LoginViewModel extends ChangeNotifier {
 
   Future<bool> addFirm(FirmModel model) async {
     try {
+      fabActive = false;
+      notifyListeners();
       await DatabaseHelper.instance.firmManager.addFirm(model);
       int lastFirmId =
           await DatabaseHelper.instance.firmManager.getLastFirmId();
@@ -90,6 +92,7 @@ class LoginViewModel extends ChangeNotifier {
     } catch (e) {
       return false;
     } finally {
+      fabActive = true;
       getFirms();
     }
   }
@@ -109,7 +112,7 @@ class LoginViewModel extends ChangeNotifier {
       int result = await DatabaseHelper.instance.firmManager.deleteFirm(model);
       if (result > 0) {
         if (model.isDefault) {
-          LocaleManager.instance.remove(LocaleManagerEnums.defaultFirmId.name);
+          LocaleManager.instance.remove(LocaleManagerEnums.defaultFirmId);
           File(DatabaseService.instance.firmDb.path).deleteSync();
         }
         return true;
@@ -140,10 +143,8 @@ class LoginViewModel extends ChangeNotifier {
 
   Future<bool> setDefaultFirm(FirmModel model) async {
     if (await LocaleManager.instance
-        .setInt(LocaleManagerEnums.defaultFirmId.name, model.id!)) {
+        .setInt(LocaleManagerEnums.defaultFirmId, model.id!)) {
       await DatabaseService.instance.initFirmDatabase(model.id);
-      // await setDefaultLoginData(model);
-
       return getFirms();
     } else {
       return false;
@@ -151,7 +152,7 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   Future setDefaultLoginData(FirmModel model) async {
-    if (LocaleManager.instance.getBool(LocaleManagerEnums.rememberMe.name) ??
+    if (LocaleManager.instance.getBool(LocaleManagerEnums.rememberMe) ??
         false) {
       Map<String, dynamic>? defaultUserData =
           await DatabaseHelper.instance.firmManager.getDefaultFirmUser(model);

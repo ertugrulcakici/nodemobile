@@ -7,4 +7,5 @@ enum LocaleManagerEnums {
   defaultFirmId,
   rememberMe,
   loggedUserId,
+  lastStockUpdateTime
 }

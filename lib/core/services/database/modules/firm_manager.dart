@@ -57,7 +57,7 @@ class FirmManager {
       await DatabaseService.instance.userDb.rawUpdate(
           "update X_Firms set Name = ?, Server = ?, User = ?, Pass = ?, Database = ? where FirmNr = ?",
           [
-            model.name,
+            model,
             model.serverIp,
             model.username,
             model.password,
@@ -71,6 +71,7 @@ class FirmManager {
           .rawDelete("delete from X_Firms where FirmNr = ${model.id}");
 
   Future<void> addFirm(FirmModel model) async {
+    log("model bilgisi: ${model.toString()}");
     DatabaseService.instance.userDb.execute(
         "INSERT INTO X_Firms (Name,Server,User,Pass,Database) VALUES ('${model.name}', '${model.serverIp}', '${model.username}', '${model.password}', '${model.database}')");
   }

@@ -1,15 +1,16 @@
 import 'dart:developer';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:nodemobile/core/services/cache/locale_helper.dart';
+import 'package:nodemobile/core/services/database/remote_database_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../../product/constants/database_constants.dart';
 import '../../../view/auth/login/model/firm_model.dart';
 import 'database_helper.dart';
-import 'i_database_service.dart';
-import '../../../product/constants/query_constants.dart';
 
-class DatabaseService implements IDatabaseService {
+class DatabaseService {
   static final DatabaseService _instance = DatabaseService._();
   static DatabaseService get instance => _instance;
   DatabaseService._();
@@ -30,7 +31,6 @@ class DatabaseService implements IDatabaseService {
     return '${(await _baseDbPath)}/${defaultFirm!.id}.db';
   }
 
-  @override
   Future<void> initUserDb() async {
     _userDb = await openDatabase(await _userDbPath, version: 1,
         onCreate: (Database db, version) async {
@@ -40,7 +40,6 @@ class DatabaseService implements IDatabaseService {
 
   /// eğer id gelirse o firma için db oluşturur. Gelmezse sadece açılıyor
   Future<void> initFirmDatabase([int? id]) async {
-    EasyLoading.instance.indicatorType = EasyLoadingIndicatorType.cubeGrid;
     // log("Database bağlantısı: ${id == null ? "id null geldi" : "id dolu geldi"}");
     _firmDb = await openDatabase(
         id == null ? await _firmDbPath : "${await _baseDbPath}/$id.db",
@@ -56,7 +55,7 @@ class DatabaseService implements IDatabaseService {
       await db.execute(DatabaseConstants.create_TRN_StockTransLines);
 
       EasyLoading.show(status: "Tablolar verileri alınıyor 1/6");
-      RemoteDatatable? dataXUsers = await RemoteDatabaseHelper.read(
+      RemoteDatatable? dataXUsers = await RemoteDatabaseService.read(
           DatabaseConstants.select_X_Users, DatabaseConstants.types_X_Users);
       EasyLoading.show(status: "Tablo verileri yazılıyor 1/6");
       if (dataXUsers != null) {
@@ -70,7 +69,7 @@ class DatabaseService implements IDatabaseService {
         throw Exception("X_Users verileri alınamadı");
       }
       EasyLoading.show(status: "Tablolar verileri alınıyor 2/6");
-      RemoteDatatable? dataXBranchs = await RemoteDatabaseHelper.read(
+      RemoteDatatable? dataXBranchs = await RemoteDatabaseService.read(
           DatabaseConstants.select_X_Branchs,
           DatabaseConstants.types_X_Branchs);
 
@@ -87,7 +86,7 @@ class DatabaseService implements IDatabaseService {
       }
 
       EasyLoading.show(status: "Tablolar verileri alınıyor 3/6");
-      RemoteDatatable? dataCari = await RemoteDatabaseHelper.read(
+      RemoteDatatable? dataCari = await RemoteDatabaseService.read(
           DatabaseConstants.select_CRD_Cari, DatabaseConstants.types_CRD_Cari);
 
       EasyLoading.show(status: "Tablo verileri yazılıyor 3/6");
@@ -103,7 +102,7 @@ class DatabaseService implements IDatabaseService {
       }
 
       EasyLoading.show(status: "Tablolar verileri alınıyor 4/6");
-      RemoteDatatable? dataStockWareHouse = await RemoteDatabaseHelper.read(
+      RemoteDatatable? dataStockWareHouse = await RemoteDatabaseService.read(
           DatabaseConstants.select_CRD_StockWareHouse,
           DatabaseConstants.types_CRD_StockWareHouse);
 
@@ -120,7 +119,7 @@ class DatabaseService implements IDatabaseService {
       }
 
       EasyLoading.show(status: "Tablolar verileri alınıyor 5/6");
-      RemoteDatatable? dataUnits = await RemoteDatabaseHelper.read(
+      RemoteDatatable? dataUnits = await RemoteDatabaseService.read(
           DatabaseConstants.select_L_Units, DatabaseConstants.types_L_Units);
 
       EasyLoading.show(status: "Tablo verileri yazılıyor 5/6");
@@ -135,7 +134,8 @@ class DatabaseService implements IDatabaseService {
         throw Exception("L_Units verileri alınamadı");
       }
       EasyLoading.show(status: "Tablolar verileri alınıyor 6/6");
-      RemoteDatatable? dataAllItems = await RemoteDatabaseHelper.read(
+
+      RemoteDatatable? dataAllItems = await RemoteDatabaseService.read(
           DatabaseConstants.select_V_AllItems,
           DatabaseConstants.types_V_AllItems);
 
@@ -146,6 +146,7 @@ class DatabaseService implements IDatabaseService {
               "insert into V_AllItems (${dataAllItems.columnNames.join(',')}) values (${List.generate(element.length, (index) => '?').join(',')})",
               element);
         }
+        LocaleHelper.instance.setLastStockUpdateTime(id);
         log("V_AllItems inserted");
       } else {
         throw Exception("V_AllItems verileri alınamadı");
