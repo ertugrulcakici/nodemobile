@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:nodemobile/core/services/database/database_helper.dart';
 import 'package:nodemobile/product/models/varyant_model.dart';
 import 'package:nodemobile/view/modules/stoklar/viewmodel/stok_listesi_viewmodel.dart';
 
@@ -25,16 +24,9 @@ class _StokListesiViewState extends ConsumerState<StokListesiView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: _s,
-      ),
       appBar: AppBar(title: const Text('Stok Listesi'), centerTitle: true),
       body: _body(),
     );
-  }
-
-  Future _s() async {
-    await DatabaseHelper.instance.stokManager.updateStocks();
   }
 
   Widget _body() {
@@ -54,7 +46,7 @@ class _StokListesiViewState extends ConsumerState<StokListesiView> {
                 VaryantModel varyant = VaryantModel.fromJson(
                     ref.watch(provider).stokListesi.rowsAsJson[index]);
                 return ListTile(
-                  title: Text(varyant.name),
+                  title: Text(varyant.name ?? "Ürün adı bulunamadı"),
                   subtitle: Text(
                       "Barkod: ${varyant.barcode}\nAçıklama: ${varyant.aciklama}\nMiktar: ${varyant.miktar}"),
                 );

@@ -40,13 +40,16 @@ class RemoteDatabaseService {
     return SqlConn.writeData(query);
   }
 
+  /// type name seperator :
+  /// type column seperator |
+  /// type seperator |$&|%#|
+  /// data seperator #%
+  /// row seperator &$
   /// herhangi bir hata oluşursa null, boş bile dönerse [RemoteDatatable] nesnesi döner
   ///
   /// [query] sql sorgusu\n
   /// [args] sql sorgusunda kullanılacak değerler\n
-  /// [types] {"column": "{String}", "type": {DataTypes}, "order": {int}} listesi
-  static Future<RemoteDatatable?> read(
-      String query, List<Map<String, dynamic>> types,
+  static Future<RemoteDatatable?> read(String query,
       {List<dynamic>? args}) async {
     // editing query
     if (args != null) {
@@ -59,8 +62,7 @@ class RemoteDatabaseService {
     }
     if (SqlConn.isConnected) {
       try {
-        RemoteDatatable table =
-            RemoteDatatable(await SqlConn.readData(query), types);
+        RemoteDatatable table = RemoteDatatable(await SqlConn.readData(query));
         log("başarılı sorgu yapıldı. Satır sayısı: ${table.rowCount} \nSorgu: $query");
         return table;
       } catch (e) {
@@ -74,35 +76,19 @@ class RemoteDatabaseService {
 }
 
 class RemoteDatatable {
-  final List<Map<String, dynamic>> dataTypes;
-
   List<List<dynamic>> onlyRows = [];
 
   static const _rowSeperator = r"&$";
   static const _columnSeperator = r"#%";
+  static const _typeSeperator = r"|$&|%#|";
+  static const _typeColumnSeperator = "|";
+  static const _typeColumnNameSeperator = ":";
 
   int get rowCount => onlyRows.length;
-  int get columnCount => dataTypes.length;
+  int get columnCount => columnTypes.length;
 
-  List<String> get columnNames {
-    int i = 0;
-    return List.generate(columnCount, (index) {
-      Map<String, dynamic> columnData =
-          dataTypes.where((element) => element["order"] == i).first;
-      i++;
-      return columnData["column"];
-    });
-  }
-
-  List<DataTypes> get columnTypes {
-    int i = 0;
-    return List.generate(columnCount, (index) {
-      Map<String, dynamic> columnData =
-          dataTypes.where((element) => element["order"] == i).first;
-      i++;
-      return columnData["type"];
-    });
-  }
+  List<String> columnNames = [];
+  List<DataTypes> columnTypes = [];
 
   Map<String, dynamic> rowInJson(int rowIndex) {
     Map<String, dynamic> row = {};
@@ -122,20 +108,41 @@ class RemoteDatatable {
     return rows;
   }
 
-  RemoteDatatable(String rawString, this.dataTypes) {
+  RemoteDatatable(String rawString) {
     if (rawString.isEmpty) {
       return;
     }
-    onlyRows = rawString.split(_rowSeperator).map((row) {
+
+    String colData = rawString.split(_typeSeperator)[0];
+    colData.split(_typeColumnSeperator).forEach((element) {
+      List<String> nameAndType = element.split(_typeColumnNameSeperator);
+      columnNames.add(nameAndType[0]);
+      if (nameAndType[1].contains("int")) {
+        columnTypes.add(DataTypes.INT);
+      } else if (nameAndType[1].contains("double") ||
+          nameAndType[1].contains("float") ||
+          nameAndType[1].contains("real")) {
+        columnTypes.add(DataTypes.REAL);
+      } else if (nameAndType[1].contains("char") ||
+          nameAndType[1].contains("time") ||
+          nameAndType[1].contains("date")) {
+        columnTypes.add(DataTypes.TEXT);
+      } else if (nameAndType[1].contains("bool")) {
+        columnTypes.add(DataTypes.BOOL);
+      } else {
+        columnTypes.add(DataTypes.TEXT);
+      }
+    });
+
+    String rowData = rawString.split(_typeSeperator)[1];
+    onlyRows = rowData.split(_rowSeperator).map((row) {
       int columnIndex = 0;
       return row.split(_columnSeperator).map((column) {
-        Map<String, dynamic> columnData =
-            dataTypes.where((element) => element["order"] == columnIndex).first;
         columnIndex++;
         if (column == "null") {
           return null;
         }
-        DataTypes columnType = columnData["type"];
+        DataTypes columnType = columnTypes[columnIndex - 1];
         switch (columnType) {
           case DataTypes.INT:
             return int.parse(column.replaceAll(".0", ""));
@@ -151,8 +158,6 @@ class RemoteDatatable {
       }).toList();
     }).toList();
   }
-
-  RemoteDatatable.fromLocale(data, this.dataTypes);
 
   // Datatable(dynamic data, this.dataTypes) {
   //   if (data is String) {
@@ -203,15 +208,15 @@ class RemoteDatatable {
   // }
 
   void debugPrint() {
-    // if (_data.isEmpty) {
-    //   log("Datatable is empty");
-    // } else {
-    //   for (var element in _data) {
-    //     log(element.toString());
-    //   }
-    //   log("Row count: ${_data.length}");
-    //   log("Column count: ${_data[0].length}");
-    // }
+    if (rowsInJson().isEmpty) {
+      log("Datatable is empty");
+    } else {
+      for (var element in rowsInJson()) {
+        log(element.toString());
+      }
+      log("Row count: ${rowsInJson().length}");
+      log("Column count: ${rowsInJson()[0].length}");
+    }
   }
 
   void orderBy(field, {descending = false}) {

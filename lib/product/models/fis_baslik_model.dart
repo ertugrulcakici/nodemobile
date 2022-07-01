@@ -33,8 +33,12 @@ class FisBasligiModel {
     if (cariId != null) {
       data["CariID"] = cariId;
     }
-    data["StockWareHouseID"] = stockWareHouseID;
-    data["DestStockWareHouseID"] = destStockWareHouseID;
+    if (stockWareHouseID != null) {
+      data["StockWareHouseID"] = stockWareHouseID;
+    }
+    if (destStockWareHouseID != null) {
+      data["DestStockWareHouseID"] = destStockWareHouseID;
+    }
     return data;
   }
 
@@ -60,4 +64,11 @@ class FisBasligiModel {
   toInsertQuery() {
     return "INSERT INTO TRN_StockTrans (FicheNo, CariID, Branch, Type, Status, TransDate, Notes, StockWareHouseID, DestStockWareHouseID, CreatedBy, CreatedDate, GoldenSync) VALUES ('$ficheNo', $cariId, $branch, $type, $status, '$transdate', '$notes', $stockWareHouseID, $destStockWareHouseID, $createdBy, '$createdDate', $goldenSync);";
   }
+
+  FisBasligiModel copy() {
+    return FisBasligiModel.fromJson(toJson());
+  }
+
+  @override
+  String toString() => toJson().toString();
 }

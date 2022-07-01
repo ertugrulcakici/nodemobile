@@ -23,7 +23,7 @@ class FirmModel {
 
   factory FirmModel.fromJson(Map<String, dynamic> json) {
     return FirmModel(
-      id: json.containsKey('FirmNr') ? json['FirmNr'] : null,
+      id: json['FirmNr'],
       name: json['Name'] as String,
       serverIp: json['Server'] as String,
       username: json['User'] as String,
@@ -40,6 +40,7 @@ class FirmModel {
       'Pass': password,
       'Database': database,
     };
+
     if (id != null) {
       data['FirmNr'] = id;
     }

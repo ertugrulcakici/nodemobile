@@ -3,7 +3,7 @@ class NavigationConstants {
   static const String settings = "/settings";
   static const String splash = "/splash";
   static const String login = "/login";
-  static const String setup = "/setup";
   static const String malzemeFisleri = "/malzemeFisleri";
+  static const String sevkiyatFisleriListesi = "/sevkiyatFisleriListesi";
   static const String stoklar = "/stoklar";
 }

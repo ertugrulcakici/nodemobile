@@ -19,11 +19,11 @@ class _AddFirmViewState extends ConsumerState<AddFirmView> {
 
   @override
   void initState() {
-    model.serverIp = "192.168.1.58";
-    model.database = "ARIKREAL";
-    model.username = "sa";
-    model.password = "ertuertu27";
-    model.name = "deneme";
+    // model.serverIp = "192.168.1.58";
+    // model.database = "ARIKREAL";
+    // model.username = "sa";
+    // model.password = "ertuertu27";
+    // model.name = "deneme";
     super.initState();
   }
 

@@ -26,13 +26,8 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
       // if (LocaleManager.instance.getBool(LocaleManagerConsant.isSetupDone) ??
       //     false)
       // {
-      if (true) {
-        NavigationService.instance
-            .navigateToPageClear(path: NavigationConstants.login);
-      } else {
-        NavigationService.instance
-            .navigateToPageClear(path: NavigationConstants.setup);
-      }
+      NavigationService.instance
+          .navigateToPageClear(path: NavigationConstants.login);
     });
   }
 

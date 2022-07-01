@@ -14,6 +14,7 @@ import 'package:nodemobile/product/models/fis_baslik_model.dart';
 import 'package:nodemobile/product/models/fis_satir_model.dart';
 import 'package:nodemobile/product/models/varyant_model.dart';
 import 'package:nodemobile/view/auth/login/model/firm_model.dart';
+import 'package:sql_conn/sql_conn.dart';
 
 part "modules/firm_manager.dart";
 part 'modules/fis_manager.dart';

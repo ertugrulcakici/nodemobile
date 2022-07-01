@@ -21,7 +21,7 @@ class FisIcerikViewModel extends ChangeNotifier {
   set urun(VaryantModel? value) {
     if (value != null) {
       urunAdi = '${value.name}\nPaketteki miktar: ${value.miktar}';
-      barcodeController.text = value.barcode;
+      barcodeController.text = value.barcode ?? "Barkod bulunamadı";
       _urun = value;
     }
   }

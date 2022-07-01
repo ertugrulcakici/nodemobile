@@ -48,7 +48,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
   void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
-    formKey.currentState!.dispose();
+    if (formKey.currentState != null) {
+      formKey.currentState!.dispose();
+    }
     super.dispose();
   }
 
@@ -56,19 +58,24 @@ class _LoginViewState extends ConsumerState<LoginView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+        ),
         appBar: AppBar(
             title: const Text('Nodemobile El Terminali'), centerTitle: true),
         body: Stack(
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(AssetConstants.logo),
-                SizedBox(height: 100.h),
-                _loginForm(),
-                _firmView()
-              ],
-            )
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              InkWell(
+                  onDoubleTap: () {
+                    NavigationService.instance
+                        .navigateToPage(path: NavigationConstants.settings);
+                  },
+                  child: Image.asset(AssetConstants.logo)),
+              SizedBox(height: 100.h),
+              _loginForm(),
+              _firmView()
+            ])
           ],
         ),
       ),

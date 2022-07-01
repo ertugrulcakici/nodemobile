@@ -147,7 +147,7 @@ class FisManager {
         
         SET XACT_ABORT OFF;
     """;
-        // log(query);
+        log(query);
 
         await RemoteDatabaseService.execute(query);
 
@@ -207,6 +207,55 @@ class FisManager {
     } catch (e) {
       log("deleteTrnLine hatası: $e");
       return false;
+    }
+  }
+
+  Future<bool> updateTrnHeader(FisBasligiModel baslik) async {
+    try {
+      int changes = await DatabaseService.instance.firmDb.update(
+          TableNames.TRN_StockTrans.name, baslik.toJson(),
+          where: "ID = ${baslik.id}");
+      if (changes > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      log("updateTrnHeader hatası: $e");
+      return false;
+    }
+  }
+
+  Future<int> addLocaleFisType(String fisName, int fisType) async {
+    try {
+      return await DatabaseService.instance.userDb
+          .insert(TableNames.FisListesi.name, {
+        "FisName": fisName,
+        "FisType": fisType,
+      });
+    } catch (e) {
+      log("addLocaleFisType hatası: $e");
+      return 0;
+    }
+  }
+
+  Future<int> deleteLocaleFisType(int fisType) async {
+    try {
+      return await DatabaseService.instance.userDb
+          .delete(TableNames.FisListesi.name, where: "FisType = $fisType");
+    } catch (e) {
+      log("deleteLocaleFisType hatası: $e");
+      return 0;
+    }
+  }
+
+  Future<LocaleDatatable?> getLocaleFisTypes() async {
+    try {
+      return DatabaseService.instance.userDb
+          .mySelectQuery(DatabaseConstants.select_FisListesi);
+    } catch (e) {
+      log("getLocaleFisTypes hatası: $e");
+      return null;
     }
   }
 }

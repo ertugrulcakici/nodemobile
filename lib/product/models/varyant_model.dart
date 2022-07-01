@@ -1,9 +1,9 @@
 class VaryantModel {
   late int id;
-  late String aciklama;
-  late String name;
-  late double miktar;
-  late String barcode;
+  String? aciklama;
+  String? name;
+  double? miktar;
+  String? barcode;
   int? unitId;
   int? type;
   double? unitPrice;
@@ -13,44 +13,33 @@ class VaryantModel {
 
   VaryantModel.fromJson(Map<String, dynamic> json) {
     id = json['ID'];
-    name = json['Name'];
-    aciklama = json['Aciklama'];
-    miktar = json['Miktar'];
-    barcode = json['Barcode'];
-    unitId = json.containsKey("UnitID") ? json['UnitID'] : null;
-    type = json.containsKey("Type") ? json['Type'] : null;
-    unitPrice = json.containsKey("UnitPrice") ? json['UnitPrice'] : null;
-    urunRenk = json.containsKey("UrunRenk") ? json['UrunRenk'] : null;
-    beden = json.containsKey("Beden") ? json['Beden'] : null;
-    taxRate = json.containsKey("TaxRate") ? json['TaxRate'] : null;
+    name ??= json['Name'];
+    aciklama ??= json['Aciklama'];
+    miktar ??= json['Miktar'];
+    barcode ??= json['Barcode'];
+    unitId ??= json['UnitID'];
+    type ??= json['Type'];
+    unitPrice ??= json['UnitPrice'];
+    urunRenk ??= json['UrunRenk'];
+    beden ??= json['Beden'];
+    taxRate ??= json['TaxRate'];
   }
 
   toJson() {
     Map<String, dynamic> data = {
       'ID': id,
-      'Aciklama': aciklama,
-      'Miktar': miktar,
-      'Barcode': barcode,
-      'Name': name,
     };
-    if (unitId != null) {
-      data['UnitID'] = unitId;
-    }
-    if (type != null) {
-      data['Type'] = type;
-    }
-    if (unitPrice != null) {
-      data['UnitPrice'] = unitPrice;
-    }
-    if (beden != null) {
-      data['Beden'] = beden;
-    }
-    if (urunRenk != null) {
-      data['UrunRenk'] = urunRenk;
-    }
-    if (taxRate != null) {
-      data['TaxRate'] = taxRate;
-    }
+
+    if (name != null) data['Name'] = name;
+    if (aciklama != null) data['Aciklama'] = aciklama;
+    if (miktar != null) data['Miktar'] = miktar;
+    if (barcode != null) data['Barcode'] = barcode;
+    if (unitId != null) data['UnitID'] = unitId;
+    if (type != null) data['Type'] = type;
+    if (unitPrice != null) data['UnitPrice'] = unitPrice;
+    if (urunRenk != null) data['UrunRenk'] = urunRenk;
+    if (beden != null) data['Beden'] = beden;
+    if (taxRate != null) data['TaxRate'] = taxRate;
     return data;
   }
 

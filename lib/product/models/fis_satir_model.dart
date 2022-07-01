@@ -9,6 +9,7 @@ class FisSatiriModel {
   double? taxRate;
   int? stockWareHouseId;
   int? destStockWareHouseId;
+  String? seriNo;
 
   int get direction {
     if (type == 0 || type == 11 || type == 14) {
@@ -29,7 +30,6 @@ class FisSatiriModel {
   late String date;
   late int stockTransId;
   late int productId;
-  late String seriNo;
   late double amount;
   late int branch;
   late int goldensync;
@@ -41,7 +41,7 @@ class FisSatiriModel {
       required this.date,
       required this.stockTransId,
       required this.productId,
-      required this.seriNo,
+      this.seriNo,
       this.beden,
       this.renk,
       required this.type,
@@ -58,24 +58,21 @@ class FisSatiriModel {
       required this.createdDate});
 
   FisSatiriModel.jromJson(Map<String, dynamic> json) {
-    id = json.containsKey("ID") ? json["ID"] : null;
-    beden = json.containsKey("Beden") ? json["Beden"] : null;
-    renk = json.containsKey("Renk") ? json["Renk"] : null;
-    type = json.containsKey("Type") ? json["Type"] : null;
-    productType = json.containsKey("ProductType") ? json["ProductType"] : null;
-    unitId = json.containsKey("UnitID") ? json["UnitID"] : null;
-    unitPrice = json.containsKey("UnitPrice") ? json["UnitPrice"] : null;
-    taxRate = json.containsKey("TaxRate") ? json["TaxRate"] : null;
-    stockWareHouseId =
-        json.containsKey("StockWareHouseID") ? json["StockWareHouseID"] : null;
-    destStockWareHouseId = json.containsKey("DestStockWareHouseID")
-        ? json["DestStockWareHouseID"]
-        : null;
+    id ??= json["ID"];
+    beden ??= json["Beden"];
+    renk ??= json["Renk"];
+    type ??= json["Type"];
+    productType ??= json["ProductType"];
+    unitId ??= json["UnitID"];
+    unitPrice ??= json["UnitPrice"];
+    taxRate ??= json["TaxRate"];
+    stockWareHouseId ??= json["StockWareHouseID"];
+    destStockWareHouseId ??= json["DestStockWareHouseID"];
+    seriNo ??= json["SeriNo"];
 
     date = json["Date"];
     stockTransId = json["StockTransID"];
     productId = json["ProductID"];
-    seriNo = json["SeriNo"];
     amount = json["Amount"];
     branch = json["Branch"];
     goldensync = json["GoldenSync"];
@@ -91,7 +88,6 @@ class FisSatiriModel {
       "InvoiceID": invoiceId,
       "StockTransID": stockTransId,
       "ProductID": productId,
-      "SeriNo": seriNo,
       "LineExp": lineExp,
       "Amount": amount,
       "CurrencyID": currencyId,
@@ -103,19 +99,19 @@ class FisSatiriModel {
     };
 
     if (id != null) data["ID"] = id;
-    if (stockWareHouseId != null) {
-      data["StockWareHouseID"] = stockWareHouseId;
-    }
-    if (destStockWareHouseId != null) {
-      data["DestStockWareHouseID"] = destStockWareHouseId;
-    }
     if (beden != null) data["Beden"] = beden;
     if (renk != null) data["Renk"] = renk;
     if (type != null) data["Type"] = type;
     if (productType != null) data["ProductType"] = productType;
     if (unitId != null) data["UnitID"] = unitId;
+    if (seriNo != null) data["SeriNo"] = seriNo;
     if (unitPrice != null) data["UnitPrice"] = unitPrice;
     if (taxRate != null) data["TaxRate"] = taxRate;
+    if (stockWareHouseId != null) data["StockWareHouseID"] = stockWareHouseId;
+    if (destStockWareHouseId != null) {
+      data["DestStockWareHouseID"] = destStockWareHouseId;
+    }
+
     return data;
   }
 
@@ -124,6 +120,6 @@ class FisSatiriModel {
 
   String toInsertQuery() =>
       """INSERT INTO TRN_StockTransLines (Date, Direction, Status, InvoiceID, StockTransID, DestStockWareHouseID, ProductID, SeriNo, Beden, Renk, Type, ProductType, LineExp, Amount, UnitID, UnitPrice, CurrencyID, CurrencyRate, TaxRate, Branch, GoldenSync, CreatedBy, CreatedDate) VALUES (
-        '$date',$direction,$status,$invoiceId,$stockTransId,$destStockWareHouseId,$productId,'$seriNo',$beden,$renk,$type,$productType,'$lineExp',$amount,$unitId,$unitPrice,$currencyId,$currencyRate,$taxRate,$branch,$goldensync,$createdBy,'$createdDate'
+        '$date',$direction,$status,$invoiceId,@DataID,$destStockWareHouseId,$productId,'$seriNo',$beden,$renk,$type,$productType,'$lineExp',$amount,$unitId,$unitPrice,$currencyId,$currencyRate,$taxRate,$branch,$goldensync,$createdBy,'$createdDate'
         );""";
 }

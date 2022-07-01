@@ -7,6 +7,7 @@ import 'package:nodemobile/core/services/navigation/navigation_service.dart';
 import 'package:nodemobile/core/utils/extentions/map_extention.dart';
 import 'package:nodemobile/product/constants/database_constants.dart';
 import 'package:nodemobile/product/models/fis_baslik_model.dart';
+import 'package:nodemobile/view/modules/malzeme_fisleri/subpages/malzeme_fisi_olustur/view/fis_baslik_update_view.dart';
 import 'package:nodemobile/view/modules/malzeme_fisleri/subpages/malzeme_fisi_olustur/viewmodel/fis_icerik_viewmodel.dart';
 import 'package:nodemobile/view/modules/malzeme_fisleri/subpages/malzeme_fisleri_listesi/view/malzeme_fisleri_listesi.dart';
 
@@ -57,38 +58,48 @@ class _MalzemeFisiIcerikState extends ConsumerState<FisIcerikView> {
     return WillPopScope(
       onWillPop: () {
         NavigationService.instance.navigateToWidgetClear(
-            widget: MalzemeFisleriListesiView(
-                type: widget.fisBasligiModel.type,
-                title:
-                    "${DatabaseConstants.fisTurleri.reverseKeyValue()[widget.fisBasligiModel.type]}(${widget.fisBasligiModel.notes})"));
+            widget:
+                MalzemeFisleriListesiView(type: widget.fisBasligiModel.type));
         return Future.value(false);
       },
       child: Scaffold(
-        floatingActionButton: widget.fisBasligiModel.goldenSync == 0
-            ? FloatingActionButton(
-                onPressed: () {
-                  ref.read(provider).addTrnLine();
-                },
-                child: const Icon(Icons.add),
-              )
-            : null,
-        appBar: AppBar(
-          title: Text(
-              "${DatabaseConstants.fisTurleri.reverseKeyValue()[widget.fisBasligiModel.type]}(${widget.fisBasligiModel.notes})"),
-          centerTitle: true,
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(16.h),
-          child: Form(
-            child: SingleChildScrollView(
-              physics: const ScrollPhysics(),
-              child: Column(
-                children: [..._addForm(), _itemForm()],
-              ),
-            ),
+        floatingActionButton: _fab(),
+        appBar: _app(),
+        body: _body(),
+      ),
+    );
+  }
+
+  Padding _body() {
+    return Padding(
+      padding: EdgeInsets.all(16.h),
+      child: Form(
+        child: SingleChildScrollView(
+          physics: const ScrollPhysics(),
+          child: Column(
+            children: [..._addForm(), _itemForm()],
           ),
         ),
       ),
+    );
+  }
+
+  AppBar _app() {
+    return AppBar(
+      title: Text(
+          "${DatabaseConstants.fisTurleri.reverseKeyValue()[widget.fisBasligiModel.type]}(${widget.fisBasligiModel.notes})"),
+      centerTitle: true,
+      actions: widget.fisBasligiModel.goldenSync == 0
+          ? [
+              IconButton(
+                  onPressed: () {
+                    NavigationService.instance.navigateToWidget(
+                        widget: FisBaslikUpdateView(
+                            fisBasligiModel: widget.fisBasligiModel));
+                  },
+                  icon: const Icon(Icons.edit))
+            ]
+          : null,
     );
   }
 
@@ -234,4 +245,13 @@ class _MalzemeFisiIcerikState extends ConsumerState<FisIcerikView> {
       },
     );
   }
+
+  _fab() => widget.fisBasligiModel.goldenSync == 0
+      ? FloatingActionButton(
+          onPressed: () {
+            ref.read(provider).addTrnLine();
+          },
+          child: const Icon(Icons.add),
+        )
+      : null;
 }

@@ -39,8 +39,6 @@ class _MalzemeFisleriAnasayfaState extends ConsumerState<MalzemeFisleriView> {
                       onTap: () {
                         NavigationService.instance.navigateToWidget(
                             widget: MalzemeFisleriListesiView(
-                                title: DatabaseConstants.fisTurleri
-                                    .toList()[index][0],
                                 type: DatabaseConstants.fisTurleri
                                     .toList()[index][1]));
                       },
@@ -61,6 +59,27 @@ class _MalzemeFisleriAnasayfaState extends ConsumerState<MalzemeFisleriView> {
                         ),
                       ),
                     )),
+            InkWell(
+              onTap: () {
+                NavigationService.instance.navigateToPage(
+                    path: NavigationConstants.sevkiyatFisleriListesi);
+              },
+              child: Card(
+                elevation: 8,
+                child: Container(
+                  padding: EdgeInsets.all(0.025.sh),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.shop),
+                      SizedBox(height: 0.01.sh),
+                      const Text("Sevkiyat fişleri")
+                    ],
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

@@ -23,7 +23,7 @@ class DatabaseService {
   final String userDbName = 'user.db';
 
   static Future<String> get _baseDbPath async =>
-      (await getExternalStorageDirectory())!.path;
+      '${(await getExternalStorageDirectory())!.path}/databases';
   Future get _userDbPath async => '${(await _baseDbPath)}/$userDbName';
   Future get _firmDbPath async {
     FirmModel? defaultFirm =
@@ -34,7 +34,10 @@ class DatabaseService {
   Future<void> initUserDb() async {
     _userDb = await openDatabase(await _userDbPath, version: 1,
         onCreate: (Database db, version) async {
-      await db.execute(DatabaseConstants.create_X_Firms);
+      log("init user db çalıştı");
+      for (String query in DatabaseConstants.create_LocaleTables) {
+        await db.execute(query);
+      }
     });
   }
 
@@ -55,8 +58,8 @@ class DatabaseService {
       await db.execute(DatabaseConstants.create_TRN_StockTransLines);
 
       EasyLoading.show(status: "Tablolar verileri alınıyor 1/6");
-      RemoteDatatable? dataXUsers = await RemoteDatabaseService.read(
-          DatabaseConstants.select_X_Users, DatabaseConstants.types_X_Users);
+      RemoteDatatable? dataXUsers =
+          await RemoteDatabaseService.read(DatabaseConstants.select_X_Users);
       EasyLoading.show(status: "Tablo verileri yazılıyor 1/6");
       if (dataXUsers != null) {
         for (var element in dataXUsers.onlyRows) {
@@ -69,9 +72,8 @@ class DatabaseService {
         throw Exception("X_Users verileri alınamadı");
       }
       EasyLoading.show(status: "Tablolar verileri alınıyor 2/6");
-      RemoteDatatable? dataXBranchs = await RemoteDatabaseService.read(
-          DatabaseConstants.select_X_Branchs,
-          DatabaseConstants.types_X_Branchs);
+      RemoteDatatable? dataXBranchs =
+          await RemoteDatabaseService.read(DatabaseConstants.select_X_Branchs);
 
       EasyLoading.show(status: "Tablo verileri yazılıyor 2/6");
       if (dataXBranchs != null) {
@@ -86,8 +88,8 @@ class DatabaseService {
       }
 
       EasyLoading.show(status: "Tablolar verileri alınıyor 3/6");
-      RemoteDatatable? dataCari = await RemoteDatabaseService.read(
-          DatabaseConstants.select_CRD_Cari, DatabaseConstants.types_CRD_Cari);
+      RemoteDatatable? dataCari =
+          await RemoteDatabaseService.read(DatabaseConstants.select_CRD_Cari);
 
       EasyLoading.show(status: "Tablo verileri yazılıyor 3/6");
       if (dataCari != null) {
@@ -103,8 +105,7 @@ class DatabaseService {
 
       EasyLoading.show(status: "Tablolar verileri alınıyor 4/6");
       RemoteDatatable? dataStockWareHouse = await RemoteDatabaseService.read(
-          DatabaseConstants.select_CRD_StockWareHouse,
-          DatabaseConstants.types_CRD_StockWareHouse);
+          DatabaseConstants.select_CRD_StockWareHouse);
 
       EasyLoading.show(status: "Tablo verileri yazılıyor 4/6");
       if (dataStockWareHouse != null) {
@@ -119,8 +120,8 @@ class DatabaseService {
       }
 
       EasyLoading.show(status: "Tablolar verileri alınıyor 5/6");
-      RemoteDatatable? dataUnits = await RemoteDatabaseService.read(
-          DatabaseConstants.select_L_Units, DatabaseConstants.types_L_Units);
+      RemoteDatatable? dataUnits =
+          await RemoteDatabaseService.read(DatabaseConstants.select_L_Units);
 
       EasyLoading.show(status: "Tablo verileri yazılıyor 5/6");
       if (dataUnits != null) {
@@ -135,9 +136,8 @@ class DatabaseService {
       }
       EasyLoading.show(status: "Tablolar verileri alınıyor 6/6");
 
-      RemoteDatatable? dataAllItems = await RemoteDatabaseService.read(
-          DatabaseConstants.select_V_AllItems,
-          DatabaseConstants.types_V_AllItems);
+      RemoteDatatable? dataAllItems =
+          await RemoteDatabaseService.read(DatabaseConstants.select_V_AllItems);
 
       EasyLoading.show(status: "Tablo verileri yazılıyor 6/6");
       if (dataAllItems != null) {

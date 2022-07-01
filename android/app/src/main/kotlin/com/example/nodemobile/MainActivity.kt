@@ -1,4 +1,4 @@
-package com.example.nodemobile
+package com.turbim.nodemobile
 
 import io.flutter.embedding.android.FlutterActivity
 

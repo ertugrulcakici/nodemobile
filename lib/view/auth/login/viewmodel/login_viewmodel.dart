@@ -55,7 +55,6 @@ class LoginViewModel extends ChangeNotifier {
             try {
               await DatabaseService.instance.userDb.execute(
                   "update X_Firms set defaultUsername = '$username', defaultPassword = '$password' where FirmNr = ${LocaleManager.instance.getInt(LocaleManagerEnums.defaultFirmId)}");
-              log("başarılı");
             } catch (e) {
               log("default kaydedilmedi. Hata: $e");
             }

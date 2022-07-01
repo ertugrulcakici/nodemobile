@@ -18,7 +18,6 @@ class FisBaslikView extends ConsumerStatefulWidget {
       _MalzemeFisiBaslikState();
 }
 
-// type 14
 class _MalzemeFisiBaslikState extends ConsumerState<FisBaslikView> {
   late ChangeNotifierProvider<FisBaslikViewModel> provider;
   final GlobalKey<FormState> _key = GlobalKey<FormState>();

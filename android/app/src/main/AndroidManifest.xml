@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.nodemobile">
+    package="com.turbim.nodemobile">
    <application
         android:label="nodemobile"
         android:name="${applicationName}"

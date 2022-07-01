@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nodemobile/core/services/navigation/navigation_service.dart';
+import 'package:nodemobile/core/utils/extentions/map_extention.dart';
+import 'package:nodemobile/product/constants/database_constants.dart';
 import 'package:nodemobile/product/constants/navigation_constants.dart';
 import 'package:nodemobile/product/models/fis_baslik_model.dart';
 import 'package:nodemobile/view/modules/malzeme_fisleri/subpages/malzeme_fisi_olustur/view/fis_baslik_view.dart';
@@ -12,10 +14,8 @@ import 'package:nodemobile/view/modules/malzeme_fisleri/subpages/malzeme_fisleri
 // ignore: must_be_immutable
 class MalzemeFisleriListesiView extends ConsumerStatefulWidget {
   final int type;
-  final String title;
-  const MalzemeFisleriListesiView(
-      {Key? key, this.type = 0, required this.title})
-      : super(key: key);
+
+  const MalzemeFisleriListesiView({Key? key, this.type = 0}) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -36,7 +36,7 @@ class _MalzemeFisiListesiState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: _fab(), appBar: _app(), body: _body());
+        floatingActionButton: _fab(), appBar: _appBar(), body: _body());
   }
 
   WillPopScope _body() {
@@ -111,9 +111,9 @@ class _MalzemeFisiListesiState
     );
   }
 
-  AppBar _app() {
+  AppBar _appBar() {
     return AppBar(
-      title: Text(widget.title),
+      title: Text(DatabaseConstants.fisTurleri.reverseKeyValue()[widget.type]),
       centerTitle: true,
     );
   }
