@@ -40,42 +40,22 @@ class _SettingsViewState extends ConsumerState<SettingsView> {
             .watch(provider)
             .fisler
             .map((e) => ListTile(
-                  title: Text(e.keys.first),
-                  subtitle: Text(e.values.first.toString()),
-                  trailing: IconButton(
-                      onPressed: () {
-                        ref.read(provider).deleteFis(e.values.first);
-                      },
-                      icon: const Icon(Icons.delete)),
+                  onTap: () {
+                    ref.read(provider).editingId = e["FisType"];
+                  },
+                  title: ref.watch(provider).editingId == e["FisType"]
+                      ? TextFormField(
+                          initialValue: e.values.last,
+                          onFieldSubmitted: (value) {
+                            ref.read(provider).fisUpdate(value, e["FisType"]);
+                          },
+                          decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              labelText: e.values.last.toString()),
+                        )
+                      : Text(e.values.last),
                 ))
             .toList(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-                flex: 2,
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: "Fiş adı",
-                    hintText: "Fiş adı",
-                    border: OutlineInputBorder(),
-                  ),
-                )),
-            Expanded(
-                flex: 1,
-                child:
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.add))),
-            Expanded(
-                flex: 2,
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: "Fiş no",
-                    hintText: "Fiş no",
-                    border: OutlineInputBorder(),
-                  ),
-                )),
-          ],
-        ),
       ],
     );
   }

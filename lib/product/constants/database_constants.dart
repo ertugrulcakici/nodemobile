@@ -18,14 +18,7 @@ enum TableNames {
 enum DataTypes { INT, TEXT, REAL, BOOL }
 
 class DatabaseConstants {
-  static const Map<String, int> fisTurleri = {
-    "Alış İrsaliye": 0,
-    "Satış İrsaliye": 1,
-    "Alış İade": 10,
-    "Satış İade": 11,
-    "Ambar Transfer": 2,
-    "Sayım Fişi": 14
-  };
+  static Map<String, int> fisTurleri = {};
 
   static const Map<int, Icon> fisIconlari = {
     0: Icon(Icons.add_shopping_cart),
@@ -71,7 +64,8 @@ CREATE TABLE "X_Firms" (
 	"defaultPassword"	TEXT,
 	PRIMARY KEY("FirmNr" AUTOINCREMENT)
 );
-'''
+''',
+    "insert into FisListesi (FisType,FisName) VALUES (0, 'Alış İrsaliye'), (1, 'Satış İrsaliye'), (10, 'Alış İade'), (11, 'Satış İade'), (2, 'Ambar Transfer'), (14, 'Sayım Fişi');"
   ];
   static const String select_X_Firms =
       '''SELECT FirmNr, Name, Server, User, Pass, Database FROM X_Firms;''';

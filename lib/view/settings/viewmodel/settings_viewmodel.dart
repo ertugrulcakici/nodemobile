@@ -8,28 +8,15 @@ class SettingsViewModel extends ChangeNotifier {
   }
 
   List<Map<String, dynamic>> fisler = [];
-
-  deleteFis(int type) async {
-    if ((await DatabaseHelper.instance.fisManager.deleteLocaleFisType(type)) !=
-        0) {
-      await fillFisler();
-    } else {
-      PopupHelper.showSimpleSnackbar("Hata oluştu", error: true);
-    }
-  }
-
-  addFis(String name, int type) async {
-    if ((await DatabaseHelper.instance.fisManager
-            .addLocaleFisType(name, type)) !=
-        0) {
-      await fillFisler();
-    } else {
-      PopupHelper.showSimpleSnackbar("Hata oluştu", error: true);
-    }
+  int _editingId = -1;
+  int get editingId => _editingId;
+  set editingId(int value) {
+    _editingId = value;
+    notifyListeners();
   }
 
   Future fillFisler() async {
-    this.fisler.clear();
+    this.fisler = [];
     LocaleDatatable? fisler =
         await DatabaseHelper.instance.fisManager.getLocaleFisTypes();
     if (fisler != null) {
@@ -38,5 +25,15 @@ class SettingsViewModel extends ChangeNotifier {
     } else {
       PopupHelper.showSimpleSnackbar("Fisler yüklenemedi", error: true);
     }
+  }
+
+  Future fisUpdate(String name, int type) async {
+    if (await DatabaseHelper.instance.fisManager
+        .updateLocaleFisType(name, type)) {
+      await fillFisler();
+    } else {
+      PopupHelper.showSimpleSnackbar("Hata oluştu", error: true);
+    }
+    DatabaseHelper.instance.fisManager.setStaticLocaleFisTypes();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nodemobile/core/services/database/database_helper.dart';
 
 import '../../../../core/services/cache/locale_manager.dart';
 import '../../../../core/services/database/database_service.dart';
@@ -40,6 +41,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
       if (!value) {
         PopupHelper.showSimpleSnackbar("Firmalar getirilemedi", error: true);
       }
+    }).then((value) {
+      DatabaseHelper.instance.fisManager.setStaticLocaleFisTypes();
     });
     super.initState();
   }
@@ -58,15 +61,12 @@ class _LoginViewState extends ConsumerState<LoginView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-        ),
         appBar: AppBar(
             title: const Text('Nodemobile El Terminali'), centerTitle: true),
         body: Stack(
           children: [
             Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              InkWell(
+              GestureDetector(
                   onDoubleTap: () {
                     NavigationService.instance
                         .navigateToPage(path: NavigationConstants.settings);

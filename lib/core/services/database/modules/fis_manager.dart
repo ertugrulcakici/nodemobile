@@ -226,29 +226,6 @@ class FisManager {
     }
   }
 
-  Future<int> addLocaleFisType(String fisName, int fisType) async {
-    try {
-      return await DatabaseService.instance.userDb
-          .insert(TableNames.FisListesi.name, {
-        "FisName": fisName,
-        "FisType": fisType,
-      });
-    } catch (e) {
-      log("addLocaleFisType hatası: $e");
-      return 0;
-    }
-  }
-
-  Future<int> deleteLocaleFisType(int fisType) async {
-    try {
-      return await DatabaseService.instance.userDb
-          .delete(TableNames.FisListesi.name, where: "FisType = $fisType");
-    } catch (e) {
-      log("deleteLocaleFisType hatası: $e");
-      return 0;
-    }
-  }
-
   Future<LocaleDatatable?> getLocaleFisTypes() async {
     try {
       return DatabaseService.instance.userDb
@@ -256,6 +233,29 @@ class FisManager {
     } catch (e) {
       log("getLocaleFisTypes hatası: $e");
       return null;
+    }
+  }
+
+  Future<bool> updateLocaleFisType(String fisName, int fisType) async {
+    try {
+      int result = await DatabaseService.instance.userDb.update(
+          TableNames.FisListesi.name, {"FisName": fisName, "FisType": fisType},
+          where: "FisType = $fisType");
+      return result > 0;
+    } catch (e) {
+      log("updateLocaleFisType hatası: $e");
+      return false;
+    }
+  }
+
+  Future setStaticLocaleFisTypes() async {
+    DatabaseConstants.fisTurleri.clear();
+    LocaleDatatable? result = await DatabaseService.instance.userDb
+        .mySelectQuery("select FisName, FisType from FisListesi");
+    if (result != null) {
+      for (var e in result.rowsAsJson) {
+        DatabaseConstants.fisTurleri[e["FisName"]] = e["FisType"];
+      }
     }
   }
 }
