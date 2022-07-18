@@ -41,8 +41,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
       if (!value) {
         PopupHelper.showSimpleSnackbar("Firmalar getirilemedi", error: true);
       }
-    }).then((value) {
-      DatabaseHelper.instance.fisManager.setStaticLocaleFisTypes();
     });
     super.initState();
   }
@@ -255,8 +253,12 @@ class _LoginViewState extends ConsumerState<LoginView> {
     if (await ref
         .read<LoginViewModel>(provider)
         .login(_usernameController.text, _passwordController.text)) {
-      NavigationService.instance
-          .navigateToPageClear(path: NavigationConstants.home);
+      DatabaseHelper.instance.fisManager
+          .setStaticLocaleFisTypes()
+          .then((value) {
+        NavigationService.instance
+            .navigateToPageClear(path: NavigationConstants.home);
+      });
     }
   }
 }

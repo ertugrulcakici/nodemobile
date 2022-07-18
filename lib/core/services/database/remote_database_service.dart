@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:nodemobile/core/services/database/database_helper.dart';
 import 'package:nodemobile/product/constants/database_constants.dart';
 import 'package:nodemobile/view/auth/login/model/firm_model.dart';
@@ -23,7 +24,7 @@ class RemoteDatabaseService {
           databaseName: firm.database,
           username: firm.username,
           password: firm.password,
-          timeout: 5);
+          timeout: 3);
       return true;
     } catch (e) {
       log("Remote sql bağlantı hatası: $e");
@@ -66,6 +67,7 @@ class RemoteDatabaseService {
         log("başarılı sorgu yapıldı. Satır sayısı: ${table.rowCount} \nSorgu: $query");
         return table;
       } catch (e) {
+        EasyLoading.showError("Sunucuya bağlanamadı. Hata mesajı: \n$e");
         log("hata oluştu: $e");
         return null;
       }
@@ -76,7 +78,7 @@ class RemoteDatabaseService {
 }
 
 class RemoteDatatable {
-  List<List<dynamic>> onlyRows = [];
+  List<List<dynamic>> rowsInList = [];
 
   static const _rowSeperator = r"&$";
   static const _columnSeperator = r"#%";
@@ -84,26 +86,26 @@ class RemoteDatatable {
   static const _typeColumnSeperator = "|";
   static const _typeColumnNameSeperator = ":";
 
-  int get rowCount => onlyRows.length;
+  int get rowCount => rowsInList.length;
   int get columnCount => columnTypes.length;
 
   List<String> columnNames = [];
   List<DataTypes> columnTypes = [];
 
-  Map<String, dynamic> rowInJson(int rowIndex) {
+  Map<String, dynamic> rowAsJson(int rowIndex) {
     Map<String, dynamic> row = {};
     int i = 0;
     for (var column in columnNames) {
-      row[column] = onlyRows[rowIndex][i];
+      row[column] = rowsInList[rowIndex][i];
       i++;
     }
     return row;
   }
 
-  List<Map<String, dynamic>> rowsInJson() {
+  List<Map<String, dynamic>> rowsAsJson() {
     List<Map<String, dynamic>> rows = [];
-    for (var row in onlyRows) {
-      rows.add(rowInJson(onlyRows.indexOf(row)));
+    for (var row in rowsInList) {
+      rows.add(rowAsJson(rowsInList.indexOf(row)));
     }
     return rows;
   }
@@ -135,7 +137,7 @@ class RemoteDatatable {
     });
 
     String rowData = rawString.split(_typeSeperator)[1];
-    onlyRows = rowData.split(_rowSeperator).map((row) {
+    rowsInList = rowData.split(_rowSeperator).map((row) {
       int columnIndex = 0;
       return row.split(_columnSeperator).map((column) {
         columnIndex++;
@@ -208,14 +210,14 @@ class RemoteDatatable {
   // }
 
   void debugPrint() {
-    if (rowsInJson().isEmpty) {
+    if (rowsAsJson().isEmpty) {
       log("Datatable is empty");
     } else {
-      for (var element in rowsInJson()) {
+      for (var element in rowsAsJson()) {
         log(element.toString());
       }
-      log("Row count: ${rowsInJson().length}");
-      log("Column count: ${rowsInJson()[0].length}");
+      log("Row count: ${rowsAsJson().length}");
+      log("Column count: ${rowsAsJson()[0].length}");
     }
   }
 

@@ -7,6 +7,13 @@ class SevkiyatBaslikOzetModel {
   String? depoAdi;
   String? nameSurname;
   String? branchName;
+  String? soforAdi;
+  String? soforTC;
+  String? soforTelefon;
+  String? konteynerAracPlaka;
+  String? dorsePlaka;
+  int? branchId;
+  int? wareHouseId;
 
   SevkiyatBaslikOzetModel({
     required this.id,
@@ -17,18 +24,31 @@ class SevkiyatBaslikOzetModel {
     this.depoAdi,
     this.nameSurname,
     this.branchName,
+    this.branchId,
+    this.wareHouseId,
+    this.soforAdi,
+    this.soforTC,
+    this.soforTelefon,
+    this.konteynerAracPlaka,
+    this.dorsePlaka,
   });
 
   factory SevkiyatBaslikOzetModel.fromJson(Map<String, dynamic> json) =>
       SevkiyatBaslikOzetModel(
         id: json["ID"],
         transDate: json["TransDate"],
-        notes: json.containsKey("Notes") ? json["Notes"] : null,
-        cariAdi: json.containsKey("CariAdi") ? json["CariAdi"] : null,
-        depoAdi: json.containsKey("DepoAdi") ? json["DepoAdi"] : null,
-        nameSurname:
-            json.containsKey("NameSirname") ? json["NameSirname"] : null,
-        branchName: json.containsKey("BranchName") ? json["BranchName"] : null,
+        notes: json["Notes"],
+        cariAdi: json["CariAdi"],
+        depoAdi: json["DepoAdi"],
+        nameSurname: json["NameSirname"],
+        branchName: json["BranchName"],
+        branchId: json["Branch"],
+        wareHouseId: json["StockWareHouseID"],
+        soforAdi: json["SoforAdi"],
+        soforTC: json["SoforTC"],
+        soforTelefon: json["SoforTelefon"],
+        konteynerAracPlaka: json["KonteynerAracPlaka"],
+        dorsePlaka: json["DorsePlaka"],
       );
 
   String toPrettyString() {
@@ -43,4 +63,23 @@ class SevkiyatBaslikOzetModel {
     subtitle += "İş yeri: $branchName";
     return subtitle;
   }
+
+  SevkiyatBaslikOzetModel copy() => SevkiyatBaslikOzetModel.fromJson(toJson());
+
+  toJson() => {
+        "ID": id,
+        "TransDate": transDate,
+        "Notes": notes,
+        "CariAdi": cariAdi,
+        "DepoAdi": depoAdi,
+        "NameSirname": nameSurname,
+        "BranchName": branchName,
+        "Branch": branchId,
+        "StockWareHouseID": wareHouseId,
+        "SoforAdi": soforAdi,
+        "SoforTC": soforTC,
+        "SoforTelefon": soforTelefon,
+        "KonteynerAracPlaka": konteynerAracPlaka,
+        "DorsePlaka": dorsePlaka,
+      };
 }

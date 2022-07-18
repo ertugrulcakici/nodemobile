@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:nodemobile/core/services/navigation/navigation_service.dart';
 import 'package:nodemobile/product/models/sevkiyat_baslik_ozet_model.dart';
-import 'package:nodemobile/view/modules/malzeme_fisleri/subpages/sevkiyat_fisi_ayrinti/view/sevkiyat_fisi_icerik_view.dart';
+import 'package:nodemobile/view/modules/malzeme_fisleri/subpages/sevkiyat_fisi_ayrinti/view/sevkiyat_fisi_baslik_view.dart';
 import 'package:nodemobile/view/modules/malzeme_fisleri/subpages/sevkiyat_fisleri_listesi/viewmodel/sevkiyat_fisleri_listesi_viewmodel.dart';
 
 class SevkiyatFisleriListesiView extends ConsumerStatefulWidget {
@@ -39,8 +39,12 @@ class _SevkiyatFisleriViewState
               ListTile(
                 subtitle: Text(baslik.toPrettyString()),
                 onTap: () {
-                  NavigationService.instance.navigateToWidget(
-                      widget: SevkiyatFisiIcerikView(baslik: baslik));
+                  NavigationService.instance
+                      .navigateToWidget(
+                          widget: SevkiyatFisiBaslikView(baslikOzet: baslik))
+                      .then((value) {
+                    ref.read(provider).fillSevkiyatBasliklari();
+                  });
                 },
               ),
               const Divider()

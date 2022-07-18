@@ -8,11 +8,11 @@ class SevkiyatFisleriListesiViewModel extends ChangeNotifier {
 
   List<SevkiyatBaslikOzetModel> sevkiyatBasliklari = [];
 
-  fillSevkiyatBasliklari() {
+  Future fillSevkiyatBasliklari() async {
     RemoteDatabaseService.read(DatabaseConstants.select_Sevkiyat).then((value) {
       if (value != null) {
         if (value.rowCount > 0) {
-          sevkiyatBasliklari = value.rowsInJson().map((e) {
+          sevkiyatBasliklari = value.rowsAsJson().map((e) {
             return SevkiyatBaslikOzetModel.fromJson(e);
           }).toList();
           notifyListeners();

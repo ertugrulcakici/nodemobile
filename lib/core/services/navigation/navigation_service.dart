@@ -43,4 +43,13 @@ class NavigationService {
                 settings: RouteSettings(arguments: data)),
             (Route<dynamic> route) => false);
   }
+
+  Future<dynamic> navigateToInstead(
+      {required Widget widget, Object? object}) async {
+    return await NavigationRouter.instance.navigatorKey.currentState!
+        .pushReplacement(MaterialPageRoute(
+      builder: (context) => widget,
+      settings: RouteSettings(arguments: object),
+    ));
+  }
 }

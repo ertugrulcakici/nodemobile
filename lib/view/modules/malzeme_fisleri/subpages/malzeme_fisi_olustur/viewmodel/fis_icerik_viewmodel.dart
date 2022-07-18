@@ -20,7 +20,7 @@ class FisIcerikViewModel extends ChangeNotifier {
   VaryantModel? get urun => _urun;
   set urun(VaryantModel? value) {
     if (value != null) {
-      urunAdi = '${value.name}\nPaketteki miktar: ${value.miktar}';
+      urunAdi = '${value.name}\nPaketteki miktar: ${value.stokAdeti}';
       barcodeController.text = value.barcode ?? "Barkod bulunamadı";
       _urun = value;
     }
@@ -197,7 +197,7 @@ class FisIcerikViewModel extends ChangeNotifier {
 
     final now = DateTime.now();
     FisSatiriModel satir = FisSatiriModel(
-      date: now.dateAndTimeString,
+      date: now.DT,
       stockTransId: fisBasligi.id!,
       productId: urun!.id,
       seriNo: urun!.barcode,
@@ -213,7 +213,7 @@ class FisIcerikViewModel extends ChangeNotifier {
       goldensync: 0,
       createdBy:
           LocaleManager.instance.getInt(LocaleManagerEnums.loggedUserId)!,
-      createdDate: now.dateAndTimeString,
+      createdDate: now.DT,
     );
     int id = await DatabaseHelper.instance.fisManager.addTrnLine(satir);
     if (id != -1) {
@@ -275,7 +275,7 @@ class FisIcerikViewModel extends ChangeNotifier {
     } else {
       satir.amount = double.parse(countController.text.replaceAll(",", "."));
     }
-    satir.date = DateTime.now().dateAndTimeString;
+    satir.date = DateTime.now().DT;
     bool success =
         await DatabaseHelper.instance.fisManager.updateTrnLine(satir);
     if (success) {

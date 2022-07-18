@@ -35,26 +35,32 @@ class _MalzemeFisleriAnasayfaState extends ConsumerState<MalzemeFisleriView> {
           children: [
             ...List.generate(
                 DatabaseConstants.fisTurleri.length,
-                (index) => InkWell(
-                      onTap: () {
-                        NavigationService.instance.navigateToWidget(
-                            widget: MalzemeFisleriListesiView(
-                                type: DatabaseConstants.fisTurleri
-                                    .toList()[index][1]));
-                      },
-                      child: Card(
-                        elevation: 8,
-                        child: Container(
-                          padding: EdgeInsets.all(0.025.sh),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              DatabaseConstants.fisIconlari.toList()[index][1],
-                              SizedBox(height: 0.01.sh),
-                              Text(DatabaseConstants.fisTurleri.toList()[index]
-                                  [0])
-                            ],
+                (index) => Visibility(
+                      visible: (DatabaseConstants.fisTurleri.toList()[index][0]
+                              as String)
+                          .isNotEmpty,
+                      child: InkWell(
+                        onTap: () {
+                          NavigationService.instance.navigateToWidget(
+                              widget: MalzemeFisleriListesiView(
+                                  type: DatabaseConstants.fisTurleri
+                                      .toList()[index][1]));
+                        },
+                        child: Card(
+                          elevation: 8,
+                          child: Container(
+                            padding: EdgeInsets.all(0.025.sh),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                DatabaseConstants.fisIconlari.toList()[index]
+                                    [1],
+                                SizedBox(height: 0.01.sh),
+                                Text(DatabaseConstants.fisTurleri
+                                    .toList()[index][0])
+                              ],
+                            ),
                           ),
                         ),
                       ),

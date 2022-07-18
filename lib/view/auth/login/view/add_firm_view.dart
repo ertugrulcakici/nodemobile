@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/services/navigation/navigation_service.dart';
@@ -85,6 +86,8 @@ class _AddFirmViewState extends ConsumerState<AddFirmView> {
         NavigationService.instance.back();
       } else {
         PopupHelper.showSimpleSnackbar('Firma eklenemedi');
+        EasyLoading.dismiss();
+        NavigationService.instance.back();
       }
     }
   }

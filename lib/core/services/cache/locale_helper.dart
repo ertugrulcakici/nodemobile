@@ -15,9 +15,7 @@ class LocaleHelper {
             .id
             .toString();
     LocaleManager.instance.setDynamicString(
-        LocaleManagerEnums.lastStockUpdateTime,
-        innerId,
-        DateTime.now().dateAndTimeString);
+        LocaleManagerEnums.lastStockUpdateTime, innerId, DateTime.now().DT);
   }
 
   Future<String> getLastStockUpdateTime() async {

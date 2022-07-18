@@ -70,6 +70,7 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   Future<bool> addFirm(FirmModel model) async {
+    bool done = true;
     try {
       fabActive = false;
       notifyListeners();
@@ -80,20 +81,31 @@ class LoginViewModel extends ChangeNotifier {
       if (await setDefaultFirm(model)) {
         try {
           await DatabaseService.instance.initFirmDatabase(lastFirmId);
-          return true;
+          done = true;
         } catch (e) {
           await deleteFirm(model);
-          return false;
+          done = false;
         }
       } else {
-        return false;
+        done = false;
       }
     } catch (e) {
-      return false;
+      done = false;
     } finally {
       fabActive = true;
-      getFirms();
     }
+    if (!done) {
+      try {
+        int lastFirmId =
+            await DatabaseHelper.instance.firmManager.getLastFirmId();
+        await DatabaseService.instance.userDb
+            .execute("delete from X_Firms where ID = $lastFirmId");
+      } catch (e) {
+        log("Firma silinemedi. Hata: $e");
+      }
+    }
+    getFirms();
+    return done;
   }
 
   Future<bool> getFirms() async {
@@ -134,6 +146,7 @@ class LoginViewModel extends ChangeNotifier {
         return false;
       }
     } catch (e) {
+      log("Hata: $e");
       return false;
     } finally {
       getFirms();

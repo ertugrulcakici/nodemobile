@@ -48,7 +48,7 @@ class _StokListesiViewState extends ConsumerState<StokListesiView> {
                 return ListTile(
                   title: Text(varyant.name ?? "Ürün adı bulunamadı"),
                   subtitle: Text(
-                      "Barkod: ${varyant.barcode}\nAçıklama: ${varyant.aciklama}\nMiktar: ${varyant.miktar}"),
+                      "Barkod: ${varyant.barcode}\nAçıklama: ${varyant.aciklama}\nMiktar: ${varyant.stokAdeti}\nBirim: ${varyant.unitCode}"),
                 );
               },
             ),

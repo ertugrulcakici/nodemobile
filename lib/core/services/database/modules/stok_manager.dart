@@ -6,8 +6,15 @@ class StokManager {
   StokManager._();
 
   Future<LocaleDatatable> getNonVariants() async =>
-      (await DatabaseService.instance.firmDb
-          .mySelectQuery("select * from V_AllItems where VaryantID = 0"))!;
+      (await DatabaseService.instance.firmDb.mySelectQuery("""
+SELECT        V_AllItems.ID, V_AllItems.Active, V_AllItems.AuthCode, V_AllItems.Code, V_AllItems.OzelKod, V_AllItems.Code2, V_AllItems.Barcode, V_AllItems.MainBarcode, V_AllItems.Name, V_AllItems.Name2, V_AllItems.TradeMark, 
+                         V_AllItems.Type, V_AllItems.UnitPrice, V_AllItems.UnitPrice2, V_AllItems.UnitPrice3, V_AllItems.AlisFiyati, V_AllItems.PakettekiMiktar, V_AllItems.AgirlikGr, V_AllItems.ItemGroupID, V_AllItems.UrunGrubu, V_AllItems.TaxRate, 
+                         V_AllItems.TaxRateToptan, V_AllItems.StokAdeti, V_AllItems.CreatedDate, V_AllItems.CreatedBy, V_AllItems.ModiFiedBy, V_AllItems.ModifiedDate, V_AllItems.UrunRenk, V_AllItems.Beden, V_AllItems.Miktar, V_AllItems.Aciklama, 
+                         V_AllItems.PakettekiAdet, V_AllItems.PacalMaliyet, V_AllItems.VaryantID, V_AllItems.UnitID, L_Units.UnitCode
+FROM            V_AllItems INNER JOIN
+                         L_Units ON V_AllItems.UnitID = L_Units.ID
+WHERE        (V_AllItems.VaryantID = 0)
+"""))!;
 
   Future<void> updateStocks() async {
     await ConnectionHelper.tryConnect(onDone: () async {
@@ -24,7 +31,7 @@ class StokManager {
         return;
       }
       if (news.rowCount > 0) {
-        for (var element in news.rowsInJson()) {
+        for (var element in news.rowsAsJson()) {
           VaryantModel model = VaryantModel.fromJson(element);
           int changed = await _updateStock(model: model);
           log("changed: $changed");
@@ -41,7 +48,7 @@ class StokManager {
       }
 
       if (deleted.rowCount > 0) {
-        for (var element in deleted.rowsInJson()) {
+        for (var element in deleted.rowsAsJson()) {
           int deleted = await _deleteStock(id: element["RecordID"]);
           log("deleted: $deleted");
           if (deleted == -1) {

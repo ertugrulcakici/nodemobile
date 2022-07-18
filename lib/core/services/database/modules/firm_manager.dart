@@ -57,7 +57,7 @@ class FirmManager {
       await DatabaseService.instance.userDb.rawUpdate(
           "update X_Firms set Name = ?, Server = ?, User = ?, Pass = ?, Database = ? where FirmNr = ?",
           [
-            model,
+            model.name,
             model.serverIp,
             model.username,
             model.password,

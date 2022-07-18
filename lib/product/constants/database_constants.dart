@@ -64,8 +64,10 @@ CREATE TABLE "X_Firms" (
 	"defaultPassword"	TEXT,
 	PRIMARY KEY("FirmNr" AUTOINCREMENT)
 );
+
 ''',
-    "insert into FisListesi (FisType,FisName) VALUES (0, 'Alış İrsaliye'), (1, 'Satış İrsaliye'), (10, 'Alış İade'), (11, 'Satış İade'), (2, 'Ambar Transfer'), (14, 'Sayım Fişi');"
+    "insert into FisListesi (FisType,FisName) VALUES (0, 'Alış İrsaliye'), (1, 'Satış İrsaliye'), (10, 'Alış İade'), (11, 'Satış İade'), (2, 'Ambar Transfer'), (14, 'Sayım Fişi');",
+    create_LocaleTRN_StockTransLines
   ];
   static const String select_X_Firms =
       '''SELECT FirmNr, Name, Server, User, Pass, Database FROM X_Firms;''';
@@ -208,13 +210,109 @@ CREATE TABLE "V_AllItems" (
   static const String select_V_AllItems = '''SELECT * FROM V_AllItems;''';
 
   static const String select_Sevkiyat = '''
-SELECT        TRN_StockTrans.ID, TRN_StockTrans.FicheNo, TRN_StockTrans.TransDate, TRN_StockTrans.Notes, CRD_Cari.Name AS CariAdi, CRD_StockWareHouse.Name AS DepoAdi, X_Users.NameSirname, 
-                         X_Branchs.Name AS BranchName
-FROM            TRN_StockTrans INNER JOIN
-                         CRD_Cari ON TRN_StockTrans.CariID = CRD_Cari.ID LEFT OUTER JOIN
-                         CRD_StockWareHouse ON TRN_StockTrans.StockWareHouseID = CRD_StockWareHouse.ID INNER JOIN
-                         X_Users ON TRN_StockTrans.CreatedBy = X_Users.ID LEFT OUTER JOIN
-                         X_Branchs ON TRN_StockTrans.Branch = X_Branchs.BranchNo
-WHERE        (TRN_StockTrans.Status = 2);
+SELECT        T.ID, T.FicheNo, T.TransDate, T.Notes, CRD_Cari.Name AS CariAdi, CRD_StockWareHouse.Name AS DepoAdi, X_Users.NameSirname, X_Branchs.Name AS BranchName, T.Branch, T.StockWareHouseID, T.SoforAdi, 
+                         T.SoforTC,T.SoforTelefon,T.KonteynerAracPlaka,T.DorsePlaka
+FROM            TRN_StockTrans AS T INNER JOIN
+                         CRD_Cari ON T.CariID = CRD_Cari.ID LEFT OUTER JOIN
+                         CRD_StockWareHouse ON T.StockWareHouseID = CRD_StockWareHouse.ID INNER JOIN
+                         X_Users ON T.CreatedBy = X_Users.ID LEFT OUTER JOIN
+                         X_Branchs ON T.Branch = X_Branchs.BranchNo
+WHERE        (T.Status = 2);
+''';
+
+  static const create_LocaleTRN_StockTransLines = '''
+CREATE TABLE TRN_StockTransLines(
+	ID INTEGER  NOT NULL UNIQUE,
+	Date datetime ,
+	Direction INTEGER ,
+	OrderID INTEGER ,
+	OrderLinesID INTEGER ,
+	WorkOrderID INTEGER ,
+	PromosyonID INTEGER ,
+	PromosyonTutari REAL ,
+	SpeCode TEXT ,
+	Status INTEGER ,
+	InvoiceID INTEGER ,
+	StockTransID INTEGER ,
+	ProjectID INTEGER ,
+	ProductID INTEGER ,
+	SeriNo TEXT ,
+	Beden INTEGER ,
+	Renk INTEGER ,
+	Type INTEGER ,
+	GuaranteeID INTEGER ,
+	LotID TEXT ,
+	BalyaNo TEXT ,
+	Guarantee INTEGER ,
+	ProductType INTEGER ,
+	LineExp TEXT ,
+	Amount REAL ,
+	RealAmount REAL ,
+	OrderAmount REAL ,
+	UnitID INTEGER ,
+	UnitPrice REAL ,
+	PerakendeFiyati REAL ,
+	LineTotal REAL ,
+	Discount REAL ,
+	DiscountRate REAL ,
+	Discount2 REAL ,
+	DiscountRate2 REAL ,
+	Discount3 REAL ,
+	DiscountRate3 REAL ,
+	SonKullanmaTarihi date ,
+	Total REAL ,
+	CurrencyID INTEGER ,
+	CurrencyRate REAL ,
+	TaxRate REAL ,
+	TotalTax REAL ,
+	AddTaxID INTEGER ,
+	TevkifatOrani TEXT ,
+	WorkerOrOutServiceID INTEGER ,
+	AggCost REAL ,
+	Branch INTEGER ,
+	GoldenSync INTEGER ,
+	SyncFicheNo TEXT ,
+	SyncLogicalRef INTEGER ,
+	StockWareHouseID INTEGER ,
+	StockRoomsID INTEGER ,
+	StockShelfID INTEGER ,
+	DestStockWareHouseID INTEGER ,
+	DestStockRoomsID INTEGER ,
+	DestStockShelfID INTEGER ,
+	PacalMaliyet REAL ,
+	PacalMaliyetIslemi TEXT ,
+	Cancelled INTEGER ,
+	InvoiceNo TEXT ,
+	DocNumber TEXT ,
+	IhracatID INTEGER ,
+	CaseNo INTEGER ,
+	CreatedBy INTEGER ,
+	AuthBy INTEGER ,
+	CariCode TEXT ,
+	PosTrans INTEGER ,
+	PakettekiAdet REAL ,
+	PaketNo TEXT ,
+	Dara REAL ,
+	SatirNo INTEGER ,
+	CreatedDate datetime ,
+	ModifiedBy INTEGER ,
+	ModifiedDate datetime ,
+	FisNo TEXT ,
+	ZNo INTEGER ,
+	TedarikciLotID TEXT ,
+	En REAL ,
+	Boy REAL ,
+	Derinlik REAL ,
+	Agirlik REAL ,
+	Yogunluk REAL ,
+	SeriLot TEXT ,
+	Depoda INTEGER ,
+	SevkiyatPaketMiktari INTEGER ,
+	SevkiyatPaketTuru TEXT ,
+	SevkiyatTeslimSekli TEXT ,
+	SevkiyatTasimaYolu INTEGER ,
+	PuanOran REAL ,
+	PRIMARY KEY("ID" AUTOINCREMENT)
+);
 ''';
 }

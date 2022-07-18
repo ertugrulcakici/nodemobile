@@ -62,7 +62,7 @@ class DatabaseService {
           await RemoteDatabaseService.read(DatabaseConstants.select_X_Users);
       EasyLoading.show(status: "Tablo verileri yazılıyor 1/6");
       if (dataXUsers != null) {
-        for (var element in dataXUsers.onlyRows) {
+        for (var element in dataXUsers.rowsInList) {
           await db.execute(
               "insert into X_Users (${dataXUsers.columnNames.join(',')}) values (${List.generate(element.length, (index) => '?').join(',')})",
               element);
@@ -77,7 +77,7 @@ class DatabaseService {
 
       EasyLoading.show(status: "Tablo verileri yazılıyor 2/6");
       if (dataXBranchs != null) {
-        for (var element in dataXBranchs.onlyRows) {
+        for (var element in dataXBranchs.rowsInList) {
           await db.execute(
               "insert into X_Branchs (${dataXBranchs.columnNames.join(',')}) values (${List.generate(element.length, (index) => '?').join(',')})",
               element);
@@ -93,7 +93,7 @@ class DatabaseService {
 
       EasyLoading.show(status: "Tablo verileri yazılıyor 3/6");
       if (dataCari != null) {
-        for (var element in dataCari.onlyRows) {
+        for (var element in dataCari.rowsInList) {
           await db.execute(
               "insert into CRD_Cari (${dataCari.columnNames.join(',')}) values (${List.generate(element.length, (index) => '?').join(',')})",
               element);
@@ -109,7 +109,7 @@ class DatabaseService {
 
       EasyLoading.show(status: "Tablo verileri yazılıyor 4/6");
       if (dataStockWareHouse != null) {
-        for (var element in dataStockWareHouse.onlyRows) {
+        for (var element in dataStockWareHouse.rowsInList) {
           await db.execute(
               "insert into CRD_StockWareHouse (${dataStockWareHouse.columnNames.join(',')}) values (${List.generate(element.length, (index) => '?').join(',')})",
               element);
@@ -125,7 +125,7 @@ class DatabaseService {
 
       EasyLoading.show(status: "Tablo verileri yazılıyor 5/6");
       if (dataUnits != null) {
-        for (var element in dataUnits.onlyRows) {
+        for (var element in dataUnits.rowsInList) {
           await db.execute(
               "insert into L_Units (${dataUnits.columnNames.join(',')}) values (${List.generate(element.length, (index) => '?').join(',')})",
               element);
@@ -141,7 +141,7 @@ class DatabaseService {
 
       EasyLoading.show(status: "Tablo verileri yazılıyor 6/6");
       if (dataAllItems != null) {
-        for (var element in dataAllItems.onlyRows) {
+        for (var element in dataAllItems.rowsInList) {
           db.rawInsert(
               "insert into V_AllItems (${dataAllItems.columnNames.join(',')}) values (${List.generate(element.length, (index) => '?').join(',')})",
               element);

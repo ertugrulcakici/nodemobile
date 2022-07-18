@@ -103,10 +103,10 @@ class FisBaslikViewModel extends ChangeNotifier {
     final now = DateTime.now();
     baslik.type = type;
     baslik.status = 1;
-    baslik.transdate = now.dateAndTimeString;
+    baslik.transdate = now.DT;
     baslik.createdBy =
         LocaleManager.instance.getInt(LocaleManagerEnums.loggedUserId)!;
-    baslik.createdDate = now.dateAndTimeString;
+    baslik.createdDate = now.DT;
     baslik.goldenSync = 0;
 
     Future.delayed(const Duration(milliseconds: 500), () {

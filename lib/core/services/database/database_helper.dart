@@ -5,25 +5,31 @@ import 'dart:developer';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:nodemobile/core/services/cache/locale_helper.dart';
+import 'package:nodemobile/core/services/cache/locale_manager.dart';
 import 'package:nodemobile/core/services/database/database_service.dart';
 import 'package:nodemobile/core/services/database/remote_database_service.dart';
 import 'package:nodemobile/core/utils/connection_helper.dart';
+import 'package:nodemobile/core/utils/extentions/datetime_extention.dart';
 import 'package:nodemobile/core/utils/extentions/map_extention.dart';
 import 'package:nodemobile/product/constants/database_constants.dart';
+import 'package:nodemobile/product/enums/locale_manager_enums.dart';
 import 'package:nodemobile/product/models/fis_baslik_model.dart';
 import 'package:nodemobile/product/models/fis_satir_model.dart';
+import 'package:nodemobile/product/models/sevkiyat_baslik_ozet_model.dart';
 import 'package:nodemobile/product/models/varyant_model.dart';
 import 'package:nodemobile/view/auth/login/model/firm_model.dart';
 import 'package:sql_conn/sql_conn.dart';
 
 part "modules/firm_manager.dart";
 part 'modules/fis_manager.dart';
+part 'modules/sevkiyat_manager.dart';
 part 'modules/stok_manager.dart';
 
 class DatabaseHelper {
   FirmManager get firmManager => FirmManager._private;
   FisManager get fisManager => FisManager._private;
   StokManager get stokManager => StokManager._private;
+  SevkiyatManager get sevkiyatManager => SevkiyatManager._private;
 
   static final DatabaseHelper _instance = DatabaseHelper._();
   static DatabaseHelper get instance => _instance;
@@ -72,4 +78,5 @@ class LocaleDatatable {
   //   log("Satır sayısı: $rowCount");
   //   log("Sütun sayısı: $columnCount");
   // }
+
 }

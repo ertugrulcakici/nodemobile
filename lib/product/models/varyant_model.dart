@@ -2,8 +2,9 @@ class VaryantModel {
   late int id;
   String? aciklama;
   String? name;
-  double? miktar;
+  double? stokAdeti;
   String? barcode;
+  String? unitCode;
   int? unitId;
   int? type;
   double? unitPrice;
@@ -15,9 +16,10 @@ class VaryantModel {
     id = json['ID'];
     name ??= json['Name'];
     aciklama ??= json['Aciklama'];
-    miktar ??= json['Miktar'];
+    stokAdeti ??= json['StokAdeti'];
     barcode ??= json['Barcode'];
     unitId ??= json['UnitID'];
+    unitCode ??= json['UnitCode'];
     type ??= json['Type'];
     unitPrice ??= json['UnitPrice'];
     urunRenk ??= json['UrunRenk'];
@@ -32,9 +34,10 @@ class VaryantModel {
 
     if (name != null) data['Name'] = name;
     if (aciklama != null) data['Aciklama'] = aciklama;
-    if (miktar != null) data['Miktar'] = miktar;
+    if (stokAdeti != null) data['StokAdeti'] = stokAdeti;
     if (barcode != null) data['Barcode'] = barcode;
     if (unitId != null) data['UnitID'] = unitId;
+    if (unitCode != null) data['UnitCode'] = unitCode;
     if (type != null) data['Type'] = type;
     if (unitPrice != null) data['UnitPrice'] = unitPrice;
     if (urunRenk != null) data['UrunRenk'] = urunRenk;
