@@ -68,7 +68,7 @@ class RemoteDatabaseService {
         return table;
       } catch (e) {
         EasyLoading.showError("Sunucuya bağlanamadı. Hata mesajı: \n$e");
-        log("hata oluştu: $e");
+        log("(remote service) hata oluştu: $e");
         return null;
       }
     } else {
