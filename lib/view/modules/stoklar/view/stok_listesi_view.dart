@@ -15,9 +15,12 @@ class _StokListesiViewState extends ConsumerState<StokListesiView> {
   ChangeNotifierProvider<StokListesiViewModel> provider =
       ChangeNotifierProvider((ref) => StokListesiViewModel());
 
+  late TextEditingController _textEditingController;
+
   @override
   void initState() {
-    ref.read(provider).init();
+    _textEditingController = TextEditingController();
+    ref.read(provider).init(_textEditingController);
     super.initState();
   }
 
@@ -33,18 +36,21 @@ class _StokListesiViewState extends ConsumerState<StokListesiView> {
     if (ref.watch(provider).setupDone) {
       return Column(
         children: [
-          const Visibility(
+          Visibility(
               visible: true,
               child: TextField(
-                decoration: InputDecoration(
+                controller: _textEditingController,
+                onChanged: ref.read(provider).onChanged,
+                decoration: const InputDecoration(
                     hintText: 'Ürün ara', contentPadding: EdgeInsets.all(8)),
               )),
           Expanded(
             child: ListView.builder(
               shrinkWrap: true,
+              itemCount: ref.watch(provider).filtered.length,
               itemBuilder: (context, index) {
-                VaryantModel varyant = VaryantModel.fromJson(
-                    ref.watch(provider).stokListesi.rowsAsJson[index]);
+                VaryantModel varyant =
+                    VaryantModel.fromJson(ref.watch(provider).filtered[index]);
                 return ListTile(
                   title: Text(varyant.name ?? "Ürün adı bulunamadı"),
                   subtitle: Text(
