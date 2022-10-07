@@ -83,6 +83,28 @@ class _HomeViewState extends State<HomeView>
                       ]),
                 ),
               ),
+            ),
+            InkWell(
+              onTap: () {
+                NavigationService.instance
+                    .navigateToPage(path: NavigationConstants.eTicaret);
+              },
+              child: Card(
+                elevation: 8,
+                child: Container(
+                  padding: EdgeInsets.all(0.025.sh),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.receipt),
+                        SizedBox(height: 0.01.sh),
+                        Text('E ticaret',
+                            style: TextStyle(fontSize: 20.sp),
+                            textAlign: TextAlign.center),
+                      ]),
+                ),
+              ),
             )
           ],
         ),

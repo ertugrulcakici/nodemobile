@@ -26,8 +26,7 @@ class NavigationService {
         .popUntil((Route<dynamic> route) => route.settings.name == path);
   }
 
-  Future<dynamic> navigateToWidget(
-      {required Widget widget, Object? data}) async {
+  Future<dynamic> navigateToWidget(Widget widget, {Object? data}) async {
     return await NavigationRouter.instance.navigatorKey.currentState!.push(
         MaterialPageRoute(
             builder: (context) => widget,

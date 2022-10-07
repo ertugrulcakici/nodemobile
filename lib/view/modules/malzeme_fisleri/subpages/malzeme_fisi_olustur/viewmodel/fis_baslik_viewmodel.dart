@@ -45,8 +45,8 @@ class FisBaslikViewModel extends ChangeNotifier {
   Future isYeriSec() async {
     final data = await DatabaseHelper.instance.fisManager.isYerleriniGetir();
     if (data != null) {
-      final selected = await NavigationService.instance.navigateToWidget(
-          widget: SearchView(
+      final selected =
+          await NavigationService.instance.navigateToWidget(SearchView(
         data: data.rowsAsJson,
         label: "İş Yeri Seç",
         titleKey: "Name",
@@ -64,8 +64,8 @@ class FisBaslikViewModel extends ChangeNotifier {
   Future girisDeposuSec() async {
     final data = await DatabaseHelper.instance.fisManager.depolariGetir();
     if (data != null) {
-      final selected = await NavigationService.instance.navigateToWidget(
-          widget: SearchView(
+      final selected =
+          await NavigationService.instance.navigateToWidget(SearchView(
         data: data.rowsAsJson,
         label: "Giriş deposu seç",
         titleKey: "Name",
@@ -83,8 +83,8 @@ class FisBaslikViewModel extends ChangeNotifier {
   Future cikisDeposuSec() async {
     final data = await DatabaseHelper.instance.fisManager.depolariGetir();
     if (data != null) {
-      final selected = await NavigationService.instance.navigateToWidget(
-          widget: SearchView(
+      final selected =
+          await NavigationService.instance.navigateToWidget(SearchView(
         data: data.rowsAsJson,
         label: "Çıkış deposu seç",
         titleKey: "Name",

@@ -207,7 +207,44 @@ CREATE TABLE "V_AllItems" (
 	"VaryantID"	INTEGER NOT NULL
 )
 ''';
-  static const String select_V_AllItems = '''SELECT * FROM V_AllItems;''';
+  static const String select_V_AllItems = '''
+SELECT
+ID,
+	Active,
+	AuthCode	,
+	Code	,
+	OzelKod	,
+	Code2	,
+	Barcode	,
+	MainBarcode	,
+	Name	,
+	Name2	,
+	TradeMark	,
+	UnitID	,
+	Type	,
+	UnitPrice	,
+	UnitPrice2	,
+	UnitPrice3	,
+	AlisFiyati	,
+	PakettekiMiktar	,
+	AgirlikGr	,
+	ItemGroupID	,
+	UrunGrubu	,
+	TaxRate	,
+	TaxRateToptan,
+	StokAdeti,
+	CreatedDate,
+	CreatedBy,
+	ModiFiedBy,
+	ModifiedDate,
+	UrunRenk,
+	Beden,
+	Miktar,
+	Aciklama,
+	PakettekiAdet,
+	PacalMaliyet,
+	VaryantID
+FROM V_AllItems;''';
 
   static const String select_Sevkiyat = '''
 SELECT        T.ID, T.FicheNo, T.TransDate, T.Notes, CRD_Cari.Name AS CariAdi, CRD_StockWareHouse.Name AS DepoAdi, X_Users.NameSirname, X_Branchs.Name AS BranchName, T.Branch, T.StockWareHouseID, T.SoforAdi, 

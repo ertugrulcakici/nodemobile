@@ -41,8 +41,8 @@ class SevkiyatFisiBaslikViewModel extends ChangeNotifier {
     RemoteDatatable? branchs =
         await DatabaseHelper.instance.sevkiyatManager.branchleriGetir();
     if (branchs != null) {
-      final result = await NavigationService.instance.navigateToWidget(
-          widget: SecmeEkraniView(
+      final result =
+          await NavigationService.instance.navigateToWidget(SecmeEkraniView(
         data: branchs.rowsAsJson(),
         label: "İş yeri seç",
         searchBy: const ["Name"],
@@ -70,8 +70,8 @@ class SevkiyatFisiBaslikViewModel extends ChangeNotifier {
     RemoteDatatable? depolar =
         await DatabaseHelper.instance.sevkiyatManager.depolariGetir();
     if (depolar != null) {
-      final result = await NavigationService.instance.navigateToWidget(
-          widget: SecmeEkraniView(
+      final result =
+          await NavigationService.instance.navigateToWidget(SecmeEkraniView(
         data: depolar.rowsAsJson(),
         label: "Depo seç",
         searchBy: const ["Name"],

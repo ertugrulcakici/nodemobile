@@ -238,13 +238,12 @@ class FisIcerikViewModel extends ChangeNotifier {
 
   Future selectFromList() async {
     if (productList != null) {
-      final data = await NavigationService.instance.navigateToWidget(
-          widget: SearchView(
-              label: "Ürün seç",
-              data: productList!.rowsAsJson,
-              titleKey: "Name",
-              subTitles: const ["Miktar", "Aciklama", "Barcode"],
-              searchBy: const ["Name", "Barcode", "Miktar", "Aciklama"]));
+      final data = await NavigationService.instance.navigateToWidget(SearchView(
+          label: "Ürün seç",
+          data: productList!.rowsAsJson,
+          titleKey: "Name",
+          subTitles: const ["Miktar", "Aciklama", "Barcode"],
+          searchBy: const ["Name", "Barcode", "Miktar", "Aciklama"]));
       if (data != null) {
         await getProductByBarcode(data["Barcode"]);
       } else {

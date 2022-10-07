@@ -25,6 +25,7 @@ class RemoteDatabaseService {
           username: firm.username,
           password: firm.password,
           timeout: 3);
+      log("servere bağlandı");
       return true;
     } catch (e) {
       log("Remote sql bağlantı hatası: $e");
@@ -67,7 +68,11 @@ class RemoteDatabaseService {
         log("başarılı sorgu yapıldı. Satır sayısı: ${table.rowCount} \nSorgu: $query");
         return table;
       } catch (e) {
+        EasyLoading.dismiss();
         EasyLoading.showError("Sunucuya bağlanamadı. Hata mesajı: \n$e");
+        Future.delayed(const Duration(seconds: 3), () {
+          EasyLoading.dismiss();
+        });
         log("(remote service) hata oluştu: $e");
         return null;
       }

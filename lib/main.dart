@@ -17,13 +17,14 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(392.7, 856.7),
+      designSize: const Size(400, 800),
       builder: (context, widget) {
         return ProviderScope(
           child: MaterialApp(
             builder: EasyLoading.init(),
             theme: ThemeData.light().copyWith(
                 appBarTheme: AppBarTheme.of(context).copyWith(
+                    elevation: 0,
                     backgroundColor: Colors.transparent,
                     iconTheme: const IconThemeData(color: Colors.black),
                     titleTextStyle:

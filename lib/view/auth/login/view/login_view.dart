@@ -111,8 +111,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
                     trailing: IconButton(
                       icon: const Icon(Icons.edit),
                       onPressed: () {
-                        NavigationService.instance.navigateToWidget(
-                            widget: EditFirmView(
+                        NavigationService.instance
+                            .navigateToWidget(EditFirmView(
                           provider: provider,
                           firmModel: model,
                         ));
@@ -123,7 +123,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
             title: const Center(child: Icon(Icons.add)),
             onTap: () {
               NavigationService.instance
-                  .navigateToWidget(widget: AddFirmView(provider: provider));
+                  .navigateToWidget(AddFirmView(provider: provider));
             },
           )
         ],

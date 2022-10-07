@@ -94,7 +94,7 @@ class _MalzemeFisiIcerikState extends ConsumerState<FisIcerikView> {
               IconButton(
                   onPressed: () {
                     NavigationService.instance.navigateToWidget(
-                        widget: FisBaslikUpdateView(
+                        FisBaslikUpdateView(
                             fisBasligiModel: widget.fisBasligiModel));
                   },
                   icon: const Icon(Icons.edit))

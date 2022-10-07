@@ -42,7 +42,7 @@ class _MalzemeFisleriAnasayfaState extends ConsumerState<MalzemeFisleriView> {
                       child: InkWell(
                         onTap: () {
                           NavigationService.instance.navigateToWidget(
-                              widget: MalzemeFisleriListesiView(
+                              MalzemeFisleriListesiView(
                                   type: DatabaseConstants.fisTurleri
                                       .toList()[index][1]));
                         },

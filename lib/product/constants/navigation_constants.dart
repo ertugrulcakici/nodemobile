@@ -6,4 +6,5 @@ class NavigationConstants {
   static const String malzemeFisleri = "/malzemeFisleri";
   static const String sevkiyatFisleriListesi = "/sevkiyatFisleriListesi";
   static const String stoklar = "/stoklar";
+  static const String eTicaret = "/eTicaret";
 }

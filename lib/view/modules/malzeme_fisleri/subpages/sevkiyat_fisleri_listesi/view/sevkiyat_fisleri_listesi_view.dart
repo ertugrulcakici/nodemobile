@@ -41,7 +41,7 @@ class _SevkiyatFisleriViewState
                 onTap: () {
                   NavigationService.instance
                       .navigateToWidget(
-                          widget: SevkiyatFisiBaslikView(baslikOzet: baslik))
+                          SevkiyatFisiBaslikView(baslikOzet: baslik))
                       .then((value) {
                     ref.read(provider).fillSevkiyatBasliklari();
                   });

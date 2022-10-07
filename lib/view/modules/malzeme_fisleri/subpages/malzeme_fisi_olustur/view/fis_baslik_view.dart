@@ -32,8 +32,7 @@ class _MalzemeFisiBaslikState extends ConsumerState<FisBaslikView> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        NavigationService.instance
-            .navigateToWidget(widget: const MalzemeFisleriView());
+        NavigationService.instance.navigateToWidget(const MalzemeFisleriView());
         return Future.value(false);
       },
       child: Scaffold(

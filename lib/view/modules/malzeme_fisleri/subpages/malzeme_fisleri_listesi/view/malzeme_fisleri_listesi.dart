@@ -78,8 +78,8 @@ class _MalzemeFisiListesiState
                 subtitle:
                     Text(info.join("\n"), style: TextStyle(fontSize: 16.sp)),
                 onTap: () {
-                  NavigationService.instance.navigateToWidget(
-                      widget: FisIcerikView(fisBasligiModel: item));
+                  NavigationService.instance
+                      .navigateToWidget(FisIcerikView(fisBasligiModel: item));
                 },
                 onLongPress: () {
                   if (item.goldenSync == 1) {

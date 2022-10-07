@@ -91,8 +91,7 @@ class _SevkiyatFisiIcerikViewState
                       icon: Icons.info_outline,
                       onPressed: (context) {
                         NavigationService.instance
-                            .navigateToWidget(
-                                widget: SevkiyatFisSatiriView(
+                            .navigateToWidget(SevkiyatFisSatiriView(
                           baslik: widget.baslik,
                           productId: initialSatir["PD"],
                           productName: initialSatir["UrunAd"],
