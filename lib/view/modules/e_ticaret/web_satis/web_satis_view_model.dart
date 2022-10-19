@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nodemobile/core/services/database/remote_database_service.dart';
+import 'package:nodemobile/core/services/navigation/navigation_service.dart';
+import 'package:nodemobile/view/modules/e_ticaret/siparis_kontrol/siparis_kontrol_view.dart';
 
 class WebSatisViewModel extends ChangeNotifier {
   List<Map<String, dynamic>> headers = [];
@@ -42,5 +44,21 @@ SELECT        C.Name AS CustomerName, CA.MobilePhone AS Phone, CA.Adress, WO.Ord
     }
     selectedCode = code;
     isLoading = false;
+  }
+
+  void listTileOnTap({required String ficheNo, required int statusCode}) {
+    switch (statusCode) {
+      case 402: // Sipariş kontrol
+        NavigationService.instance
+            .navigateToWidget(SiparisKontrolView(ficheNo: ficheNo))
+            .then((value) {
+          getHeader();
+        });
+        break;
+      case 405:
+        // NavigationService.instance.navigateToWidget();
+        break;
+      default:
+    }
   }
 }

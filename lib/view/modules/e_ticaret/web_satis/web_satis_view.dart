@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -60,12 +58,13 @@ class _WebSatisViewState extends ConsumerState<WebSatisView> {
               ref.read(provider).getProductsByCode(code);
             },
             child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
               decoration: BoxDecoration(
                 border: ref.watch(provider).selectedCode == code
                     ? Border.all(color: Colors.blue)
                     : null,
               ),
-              margin: EdgeInsets.symmetric(horizontal: 10.w),
+              margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
               child: Center(child: Text(name)),
             ),
           );
@@ -79,15 +78,36 @@ class _WebSatisViewState extends ConsumerState<WebSatisView> {
     if (orders.isEmpty) {
       return const Text("Boş");
     }
-    log("order length: ${orders.length}");
-    return SizedBox(
-      height: 600.h,
+    return Expanded(
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: orders.length,
         itemBuilder: (context, index) {
           Map order = orders[index];
-          return Text(order.toString());
+          return Card(
+            child: ListTile(
+              onTap: () {
+                ref.read(provider).listTileOnTap(
+                    ficheNo: order["FicheNo"], statusCode: order["StatusCode"]);
+              },
+              title: Text("Fiş numarası: ${order["FicheNo"]}"),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("İlgili kişi: ${order["CustomerName"]}"),
+                  Text("Numara: ${order["Phone"]}"),
+                  Text("Adress: ${order["Adress"]}",
+                      style: const TextStyle(color: Colors.black)),
+                  Text("Durum: ${order["StatusName"]}"),
+                  Text("Sipariş tarihi: ${order["OrderDate"]}",
+                      style: const TextStyle(color: Colors.black)),
+                  Text("Tahmini teslimat: ${order["DeliveryDate"]}",
+                      style: const TextStyle(color: Colors.black)),
+                  Text("Not :${order["OrderNotes"]}"),
+                ],
+              ),
+            ),
+          );
         },
       ),
     );

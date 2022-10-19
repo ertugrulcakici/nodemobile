@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'navigation_route.dart';
 
 class NavigationService {
+  static BuildContext get context =>
+      NavigationRouter.instance.navigatorKey.currentState!.context;
   static final NavigationService _instance = NavigationService._init();
   static NavigationService get instance => _instance;
   NavigationService._init();

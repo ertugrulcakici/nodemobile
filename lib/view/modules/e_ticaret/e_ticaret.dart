@@ -14,6 +14,7 @@ class _ETicaretViewState extends State<ETicaretView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('E-Ticaret')),
       body: GridView.count(
         crossAxisCount: 2,
         children: [
